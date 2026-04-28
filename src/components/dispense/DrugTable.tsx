@@ -84,12 +84,6 @@ export default function DrugTable({ drugs, checkable = false, onToggle }: DrugTa
               </div>
             </div>
 
-            {drug.dispenseNote && (
-              <div className="mt-2 p-2.5 rounded-lg bg-sky-50/70 border border-sky-200/50">
-                <p className="text-slate-400 text-xs font-semibold mb-1">調劑事項</p>
-                <p className="text-slate-600 text-sm whitespace-pre-line leading-relaxed">{drug.dispenseNote}</p>
-              </div>
-            )}
           </div>
         </div>
       ))}
