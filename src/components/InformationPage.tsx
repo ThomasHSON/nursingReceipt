@@ -32,7 +32,7 @@ export default function InformationPage() {
         {selectedRx ? (
           <PrescriptionDetailView
             regimen={selectedRx}
-            status={selectedRx.status}
+            cardKey="treating"
             onBack={handleBack}
           />
         ) : (

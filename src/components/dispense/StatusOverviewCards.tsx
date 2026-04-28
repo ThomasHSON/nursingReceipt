@@ -1,15 +1,20 @@
-import { DispenseStatus, DispenseStatusStat } from '../../types';
+type CardKey = 'receivable' | 'treating';
 
-interface StatusOverviewCardsProps {
-  stats: DispenseStatusStat[];
-  activeStatus: DispenseStatus | null;
-  onSelect: (status: DispenseStatus) => void;
+interface CardDef {
+  key: CardKey;
+  labelZh: string;
+  labelEn: string;
 }
 
-const STATUS_CONFIG: Record<
-  DispenseStatus,
-  { bg: string; numColor: string; labelColor: string; subColor: string; ringColor: string; accentBar: string }
-> = {
+interface StatusOverviewCardsProps {
+  cards: CardDef[];
+  activeCard: CardKey | null;
+  onSelect: (card: CardKey) => void;
+}
+
+const CARD_CONFIG: Record<CardKey, {
+  bg: string; numColor: string; labelColor: string; subColor: string; ringColor: string; accentBar: string;
+}> = {
   receivable: {
     bg: 'bg-amber-50/70 hover:bg-amber-50/90',
     numColor: 'text-amber-600',
@@ -28,17 +33,17 @@ const STATUS_CONFIG: Record<
   },
 };
 
-export default function StatusOverviewCards({ stats, activeStatus, onSelect }: StatusOverviewCardsProps) {
+export default function StatusOverviewCards({ cards, activeCard, onSelect }: StatusOverviewCardsProps) {
   return (
     <div className="grid grid-cols-2 gap-5 p-3">
-      {stats.map((stat) => {
-        const cfg = STATUS_CONFIG[stat.status];
-        const isActive = activeStatus === stat.status;
+      {cards.map((card) => {
+        const cfg = CARD_CONFIG[card.key];
+        const isActive = activeCard === card.key;
 
         return (
           <button
-            key={stat.status}
-            onClick={() => onSelect(stat.status)}
+            key={card.key}
+            onClick={() => onSelect(card.key)}
             className={`
               relative overflow-hidden
               ${cfg.bg}
@@ -60,13 +65,9 @@ export default function StatusOverviewCards({ stats, activeStatus, onSelect }: S
             </div>
             <div className="absolute top-0 left-0 right-0 h-px bg-white/80" />
 
-            <span className={`text-6xl font-extrabold tabular-nums ${cfg.numColor}`}>
-              {stat.count}
-            </span>
-            <div className={`w-[60%] h-[2px] background-black my-8 ${cfg.accentBar} opacity-40`} />
             <div className="text-center">
-              <p className={`text-2xl font-semibold leading-tight ${cfg.labelColor}`}>{stat.labelZh}</p>
-              <p className={`text-sm tracking-widest mt-0.5 ${cfg.subColor}`}>{stat.labelEn}</p>
+              <p className={`text-2xl font-semibold leading-tight ${cfg.labelColor}`}>{card.labelZh}</p>
+              <p className={`text-sm tracking-widest mt-0.5 ${cfg.subColor}`}>{card.labelEn}</p>
             </div>
 
             {isActive && (

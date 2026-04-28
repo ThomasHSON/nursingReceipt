@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, FlaskConical, BookOpen, FileText, AlertTriangle, BarChart2, CheckCircle2, ClipboardCheck, Building2 } from 'lucide-react';
-import { DispenseStatus, Regimen, DrugItem } from '../../types';
+import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, BookOpen, FileText, AlertTriangle, BarChart2, FlaskConical, Building2 } from 'lucide-react';
+import { Regimen, DrugItem } from '../../types';
 import DrugTable from './DrugTable';
 
+type CardKey = 'receivable' | 'treating';
 type QueryTab = 'main' | 'regimen' | 'treatment' | 'project' | 'variation' | 'labvalue' | 'alert';
 
-const QUERY_TABS: { key: QueryTab; label: string; icon: React.ReactNode }[] = [
-  { key: 'regimen', label: 'Regimen', icon: <BookOpen className="w-3.5 h-3.5" /> },
-  { key: 'treatment', label: '計劃治療書', icon: <FileText className="w-3.5 h-3.5" /> },
-  { key: 'project', label: '專案用藥', icon: <FlaskConical className="w-3.5 h-3.5" /> },
-  { key: 'variation', label: '變異紀錄', icon: <BarChart2 className="w-3.5 h-3.5" /> },
-  { key: 'labvalue', label: '檢驗數值', icon: <Stethoscope className="w-3.5 h-3.5" /> },
-  { key: 'alert', label: '異常提醒', icon: <AlertTriangle className="w-3.5 h-3.5" /> },
+const QUERY_TABS: { key: QueryTab; label: string }[] = [
+  { key: 'regimen', label: 'Regimen' },
+  { key: 'treatment', label: '計劃治療書' },
+  { key: 'project', label: '專案用藥' },
+  { key: 'variation', label: '變異紀錄' },
+  { key: 'labvalue', label: '檢驗數值' },
+  { key: 'alert', label: '異常提醒' },
 ];
 
 function calcAge(birthDate: string): number {
@@ -25,26 +26,16 @@ function calcAge(birthDate: string): number {
 
 interface PrescriptionDetailViewProps {
   regimen: Regimen;
-  status: DispenseStatus;
+  cardKey: CardKey;
   onBack: () => void;
 }
 
-export default function PrescriptionDetailView({ regimen, status, onBack }: PrescriptionDetailViewProps) {
+export default function PrescriptionDetailView({ regimen, cardKey, onBack }: PrescriptionDetailViewProps) {
   const [activeTab, setActiveTab] = useState<QueryTab>('main');
-  const [drugs, setDrugs] = useState<DrugItem[]>(regimen.drugs);
+  const [drugs] = useState<DrugItem[]>(regimen.drugs);
 
   const patientType = regimen.admissionNumber ? 'inpatient' : 'outpatient';
-
-  const handleToggle = (id: string) => {
-    setDrugs(prev => prev.map(d => d.id === id ? { ...d, checked: !d.checked } : d));
-  };
-
-  const isUnexamined = status === 'unexamined';
-  const checkedCount = drugs.filter(d => d.checked).length;
-  const allChecked = drugs.length > 0 && checkedCount === drugs.length;
-  const showConfirmBtn = (status === 'preparing' || status === 'dispense') && activeTab === 'main';
-  const confirmLabel = status === 'preparing' ? '確認備藥完成' : '確認調劑完成';
-  const mainLabel = status === 'dispense' ? '調劑' : status === 'preparing' ? '備藥' : status === 'unexamined' ? '審核' : '已完成';
+  const mainLabel = cardKey === 'receivable' ? '簽收' : '查看';
 
   return (
     <div className="flex flex-col flex-1 gap-4 px-4 pb-2 min-h-0">
@@ -71,11 +62,6 @@ export default function PrescriptionDetailView({ regimen, status, onBack }: Pres
               <Building2 className="w-3.5 h-3.5 text-amber-500" />
               <span className="text-amber-700 text-sm font-mono font-semibold">{regimen.admissionNumber}</span>
             </div>
-          )}
-          {isUnexamined && (
-            <span className="px-2.5 py-0.5 rounded-full text-sm font-semibold bg-rose-100 text-rose-600 border border-rose-200/60">
-              待審核
-            </span>
           )}
         </div>
 
@@ -159,57 +145,13 @@ export default function PrescriptionDetailView({ regimen, status, onBack }: Pres
           </div>
 
           <div className="glass-card-solid flex-1 flex flex-col min-h-0 overflow-hidden">
-            {!isUnexamined && checkedCount > 0 && (
-              <div className="px-4 py-2 border-b border-slate-100 flex-shrink-0 flex justify-end">
-                <span className="text-sm text-emerald-600 font-semibold bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-lg">
-                  已備 {checkedCount} / {drugs.length}
-                </span>
-              </div>
-            )}
-            <DrugTable
-              drugs={isUnexamined ? regimen.drugs : drugs}
-              checkable={!isUnexamined}
-              onToggle={isUnexamined ? undefined : handleToggle}
-            />
+            <DrugTable drugs={drugs} checkable={false} />
           </div>
 
-          {isUnexamined && (
-            <div className="flex items-center justify-between glass-card px-5 py-3 flex-shrink-0">
-              <div className="flex items-center gap-3">
-                <ClipboardCheck className="w-4 h-4 text-slate-400" />
-                <span className="text-slate-500 text-base">請確認處方內容後進行審核</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-base font-semibold border border-rose-200 text-rose-600 bg-rose-50 hover:bg-rose-100 transition-all duration-200 cursor-pointer">
-                  退回
-                </button>
-                <button className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-base font-semibold bg-sky-500 text-white shadow-[0_2px_16px_rgba(14,165,233,0.35)] hover:bg-sky-600 hover:shadow-[0_4px_22px_rgba(14,165,233,0.45)] active:scale-[0.97] transition-all duration-200 cursor-pointer">
-                  <ClipboardCheck className="w-4 h-4" />
-                  確認審核通過
-                </button>
-              </div>
-            </div>
-          )}
-
-          {showConfirmBtn && (
-            <div className="flex items-center justify-between glass-card px-5 py-3 flex-shrink-0">
-              <div className={`flex items-center gap-1.5 text-base font-medium ${allChecked ? 'text-emerald-600' : 'text-slate-400'}`}>
-                <CheckCircle2 className={`w-4 h-4 ${allChecked ? 'text-emerald-500' : 'text-slate-300'}`} />
-                {allChecked
-                  ? '所有藥品已勾選，可確認送出'
-                  : `尚有 ${drugs.length - checkedCount} 項藥品未勾選`}
-              </div>
-
-              <button
-                disabled={!allChecked}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-base font-semibold transition-all duration-200 ${
-                  allChecked
-                    ? 'bg-emerald-500 text-white shadow-[0_2px_16px_rgba(16,185,129,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_22px_rgba(16,185,129,0.45)] active:scale-[0.97] cursor-pointer'
-                    : 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
-                }`}
-              >
-                <CheckCircle2 className="w-4 h-4" />
-                {confirmLabel}
+          {cardKey === 'receivable' && (
+            <div className="flex items-center justify-end glass-card px-5 py-3 flex-shrink-0">
+              <button className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-base font-semibold bg-amber-500 text-white shadow-[0_2px_16px_rgba(245,158,11,0.35)] hover:bg-amber-600 hover:shadow-[0_4px_22px_rgba(245,158,11,0.45)] active:scale-[0.97] transition-all duration-200 cursor-pointer">
+                確認簽收
               </button>
             </div>
           )}

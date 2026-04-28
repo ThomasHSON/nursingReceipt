@@ -2,10 +2,10 @@ import { Clock, FileText, Stethoscope, User, ArrowRight, Building2 } from 'lucid
 import { DispenseStatus, Regimen } from '../../types';
 
 const STATUS_CAPSULE: Record<DispenseStatus, { label: string; className: string }> = {
-  unexamined: { label: '待審核', className: 'bg-rose-100 text-rose-700 border border-rose-200' },
-  preparing:  { label: '備藥中', className: 'bg-amber-100 text-amber-700 border border-amber-200' },
-  dispense:   { label: '調配中', className: 'bg-blue-100 text-blue-700 border border-blue-200' },
-  completed:  { label: '已完成', className: 'bg-emerald-100 text-emerald-700 border border-emerald-200' },
+  completed:  { label: '已完成',  className: 'bg-slate-100 text-slate-600 border border-slate-200' },
+  delivering: { label: '運送中',  className: 'bg-amber-100 text-amber-700 border border-amber-200' },
+  received:   { label: '已簽收',  className: 'bg-emerald-100 text-emerald-700 border border-emerald-200' },
+  finished:   { label: '療程結束', className: 'bg-blue-100 text-blue-700 border border-blue-200' },
 };
 
 interface InfoPrescriptionCardProps {

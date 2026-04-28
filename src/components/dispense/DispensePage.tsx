@@ -5,46 +5,75 @@ import { mockStatusStats, mockRegimens } from '../../data/mockData';
 import StatusOverviewCards from './StatusOverviewCards';
 import PrescriptionListDetail from './PrescriptionListDetail';
 
-export default function DispensePage() {
-  const [activeStatus, setActiveStatus] = useState<DispenseStatus | null>(null);
+type CardKey = 'receivable' | 'treating';
 
-  const handleSelectStatus = (status: DispenseStatus) => {
-    setActiveStatus((prev) => (prev === status ? null : status));
+const CARD_FILTER: Record<CardKey, DispenseStatus[]> = {
+  receivable: ['completed', 'delivering'],
+  treating: ['received'],
+};
+
+export default function DispensePage() {
+  const [activeCard, setActiveCard] = useState<CardKey | null>(null);
+
+  const handleSelectCard = (card: CardKey) => {
+    setActiveCard((prev) => (prev === card ? null : card));
   };
 
-  const handleBack = () => setActiveStatus(null);
+  const handleBack = () => setActiveCard(null);
 
-  const activeStat = mockStatusStats.find((s) => s.status === activeStatus);
-  const filteredRegimens = activeStatus
-    ? mockRegimens.filter((rx) => rx.status === activeStatus)
+  const filteredRegimens = activeCard
+    ? mockRegimens.filter((rx) => CARD_FILTER[activeCard].includes(rx.status))
     : [];
+
+  const activeStat = activeCard
+    ? mockStatusStats.find((s) =>
+        activeCard === 'receivable'
+          ? s.status === 'delivering'
+          : s.status === 'received'
+      )
+    : undefined;
+
+  const CARDS = [
+    { key: 'receivable' as CardKey, labelZh: '可簽收', labelEn: 'Receivable' },
+    { key: 'treating' as CardKey, labelZh: '治療中', labelEn: 'Treating' },
+  ];
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      {!activeStatus ? (
-        <StatusOverviewCards
-          stats={mockStatusStats}
-          activeStatus={activeStatus}
-          onSelect={handleSelectStatus}
-        />
+      {!activeCard ? (
+        <>
+          <StatusOverviewCards
+            cards={CARDS}
+            activeCard={activeCard}
+            onSelect={handleSelectCard}
+          />
+          <div className="flex-1 flex items-center justify-center px-6 pb-6">
+            <div className="glass-card px-10 py-8 text-center max-w-md">
+              <p className="text-slate-600 text-base font-medium">請選擇狀態卡片以查看詳細清單</p>
+              <p className="text-slate-400 text-sm mt-1.5">Select a status card to view details</p>
+            </div>
+          </div>
+        </>
       ) : (
         activeStat && (
           <>
             <div className="px-6 pt-3 mb-3 flex-shrink-0">
               <div className="flex items-center justify-between">
                 <div className="flex gap-2">
-                  {mockStatusStats.map((stat) => (
+                  {CARDS.map((card) => (
                     <button
-                      key={stat.status}
-                      onClick={() => setActiveStatus(stat.status)}
+                      key={card.key}
+                      onClick={() => setActiveCard(card.key)}
                       className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                        activeStatus === stat.status
+                        activeCard === card.key
                           ? 'bg-blue-500/12 text-blue-700 border border-blue-300/50 shadow-sm'
                           : 'text-slate-500 hover:text-slate-700 hover:bg-white/60 border border-transparent'
                       }`}
                     >
-                      {stat.labelZh}
-                      <span className="ml-2 text-xs opacity-60">({stat.count})</span>
+                      {card.labelZh}
+                      <span className="ml-2 text-xs opacity-60">
+                        ({mockRegimens.filter(rx => CARD_FILTER[card.key].includes(rx.status)).length})
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -64,21 +93,12 @@ export default function DispensePage() {
             </div>
 
             <PrescriptionListDetail
-              key={activeStatus}
-              stat={activeStat}
+              key={activeCard}
+              cardKey={activeCard}
               regimens={filteredRegimens}
             />
           </>
         )
-      )}
-
-      {!activeStatus && (
-        <div className="flex-1 flex items-center justify-center px-6 pb-6">
-          <div className="glass-card px-10 py-8 text-center max-w-md">
-            <p className="text-slate-600 text-base font-medium">請選擇狀態卡片以查看詳細清單</p>
-            <p className="text-slate-400 text-sm mt-1.5">Select a status card to view details</p>
-          </div>
-        </div>
       )}
     </div>
   );

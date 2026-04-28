@@ -1,20 +1,21 @@
 import { useState } from 'react';
-import { ScanLine, Clock, User, Stethoscope, ChevronRight, Building2 } from 'lucide-react';
-import { DispenseStatus, DispenseStatusStat, Regimen } from '../../types';
+import { ScanLine, Clock, User, Stethoscope, ChevronRight, Building2, Lock } from 'lucide-react';
+import { DispenseStatus, Regimen } from '../../types';
 import PrescriptionDetailView from './PrescriptionDetailView';
 
+type CardKey = 'receivable' | 'treating';
+type FilterType = 'all' | 'outpatient' | 'inpatient';
+
 interface PrescriptionListDetailProps {
-  stat: DispenseStatusStat;
+  cardKey: CardKey;
   regimens: Regimen[];
 }
 
-type FilterType = 'all' | 'outpatient' | 'inpatient';
-
-const STATUS_ACTION: Record<DispenseStatus, string> = {
-  unexamined: '審核',
-  preparing: '備藥',
-  dispense: '調劑',
-  completed: '調閱',
+const STATUS_LABEL: Record<DispenseStatus, { label: string; className: string }> = {
+  completed: { label: '已完成', className: 'bg-slate-100 text-slate-500 border-slate-200' },
+  delivering: { label: '運送中', className: 'bg-amber-100 text-amber-700 border-amber-200' },
+  received: { label: '已簽收', className: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
+  finished: { label: '療程結束', className: 'bg-blue-100 text-blue-700 border-blue-200' },
 };
 
 const PATIENT_TYPE_STYLE: Record<'outpatient' | 'inpatient', { card: string; badge: string; dot: string }> = {
@@ -30,38 +31,36 @@ const PATIENT_TYPE_STYLE: Record<'outpatient' | 'inpatient', { card: string; bad
   },
 };
 
-const STATUS_BTN: Record<DispenseStatus, string> = {
-  unexamined: 'bg-rose-500 hover:bg-rose-600 shadow-rose-200',
-  preparing: 'bg-amber-500 hover:bg-amber-600 shadow-amber-200',
-  dispense: 'bg-blue-500 hover:bg-blue-600 shadow-blue-200',
-  completed: 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200',
-};
-
 function regimenPatientType(rx: Regimen): 'outpatient' | 'inpatient' {
   return rx.admissionNumber ? 'inpatient' : 'outpatient';
 }
 
 function RegimenCard({
   rx,
-  status,
+  cardKey,
   onSelect,
 }: {
   rx: Regimen;
-  status: DispenseStatus;
+  cardKey: CardKey;
   onSelect: (rx: Regimen) => void;
 }) {
   const patientType = regimenPatientType(rx);
   const typeStyle = PATIENT_TYPE_STYLE[patientType];
-  const actionLabel = STATUS_ACTION[status];
-  const btnStyle = STATUS_BTN[status];
+  const statusInfo = STATUS_LABEL[rx.status];
   const [datePart, timePart] = rx.effectiveDateTime.split(' ');
+
+  const isDisabled = cardKey === 'receivable' && rx.status === 'completed';
 
   return (
     <div
-      className={`flex items-center gap-4 px-4 py-3 rounded-2xl border transition-all duration-200 cursor-pointer group ${typeStyle.card}`}
-      onClick={() => onSelect(rx)}
+      className={`flex items-center gap-4 px-4 py-3 rounded-2xl border transition-all duration-200 ${
+        isDisabled
+          ? 'bg-slate-50/60 border-slate-200/50 opacity-50 cursor-not-allowed'
+          : `${typeStyle.card} cursor-pointer group`
+      }`}
+      onClick={() => !isDisabled && onSelect(rx)}
     >
-      <div className={`w-1 h-12 rounded-full flex-shrink-0 ${typeStyle.dot}`} />
+      <div className={`w-1 h-12 rounded-full flex-shrink-0 ${isDisabled ? 'bg-slate-300' : typeStyle.dot}`} />
 
       <div className="flex flex-col gap-0.5 w-32 flex-shrink-0">
         <span className="text-slate-800 text-base font-semibold font-mono">{datePart}</span>
@@ -102,23 +101,33 @@ function RegimenCard({
         </div>
       </div>
 
-      <button
-        onClick={(e) => { e.stopPropagation(); onSelect(rx); }}
-        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white flex-shrink-0 shadow-md transition-all duration-200 active:scale-95 ${btnStyle}`}
-      >
-        {actionLabel}
-        <ChevronRight className="w-4 h-4" />
-      </button>
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border flex-shrink-0 ${statusInfo.className}`}>
+        {statusInfo.label}
+      </span>
+
+      {isDisabled ? (
+        <Lock className="w-4 h-4 text-slate-300 flex-shrink-0" />
+      ) : (
+        <button
+          onClick={(e) => { e.stopPropagation(); onSelect(rx); }}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white flex-shrink-0 shadow-md transition-all duration-200 active:scale-95 ${
+            cardKey === 'receivable'
+              ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-200'
+              : 'bg-blue-500 hover:bg-blue-600 shadow-blue-200'
+          }`}
+        >
+          {cardKey === 'receivable' ? '簽收' : '查看'}
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      )}
     </div>
   );
 }
 
-export default function PrescriptionListDetail({ stat, regimens }: PrescriptionListDetailProps) {
+export default function PrescriptionListDetail({ cardKey, regimens }: PrescriptionListDetailProps) {
   const [scanValue, setScanValue] = useState('');
   const [selectedRx, setSelectedRx] = useState<Regimen | null>(null);
   const [filter, setFilter] = useState<FilterType>('all');
-
-  const showScanBar = stat.status === 'preparing' || stat.status === 'dispense';
 
   const filtered = filter === 'all'
     ? regimens
@@ -131,7 +140,7 @@ export default function PrescriptionListDetail({ stat, regimens }: PrescriptionL
     return (
       <PrescriptionDetailView
         regimen={selectedRx}
-        status={stat.status}
+        cardKey={cardKey}
         onBack={() => setSelectedRx(null)}
       />
     );
@@ -139,7 +148,7 @@ export default function PrescriptionListDetail({ stat, regimens }: PrescriptionL
 
   return (
     <div className="flex flex-1 flex-col gap-4 px-6 pb-6 min-h-0">
-      {showScanBar && (
+      {cardKey === 'receivable' && (
         <div className="glass-card p-4 flex-shrink-0">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3 flex-shrink-0">
@@ -147,14 +156,12 @@ export default function PrescriptionListDetail({ stat, regimens }: PrescriptionL
                 <ScanLine className="w-4.5 h-4.5 text-amber-500" />
               </div>
               <div>
-                <p className="text-slate-800 font-semibold text-sm">
-                  {stat.status === 'preparing' ? '備藥通知' : '調劑通知'}
-                </p>
-                <p className="text-slate-500 text-xs">掃描調劑條碼 Scan Dispense Barcode</p>
+                <p className="text-slate-800 font-semibold text-sm">簽收通知</p>
+                <p className="text-slate-500 text-xs">掃描條碼進行簽收 Scan Barcode to Receive</p>
               </div>
             </div>
             <div className="flex-1 relative">
-              <ScanLine className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+              <ScanLine className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
                 value={scanValue}
@@ -197,7 +204,7 @@ export default function PrescriptionListDetail({ stat, regimens }: PrescriptionL
               <RegimenCard
                 key={rx.id}
                 rx={rx}
-                status={stat.status}
+                cardKey={cardKey}
                 onSelect={setSelectedRx}
               />
             ))
