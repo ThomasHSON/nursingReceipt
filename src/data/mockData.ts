@@ -20,10 +20,8 @@ export const mockUsers: User[] = [
 ];
 
 export const mockStatusStats: DispenseStatusStat[] = [
-  { status: 'unexamined', labelZh: '未審核', labelEn: 'Unexamined', count: 7 },
-  { status: 'preparing', labelZh: '可備藥', labelEn: 'Preparing', count: 4 },
-  { status: 'dispense', labelZh: '可調劑', labelEn: 'Dispense', count: 3 },
-  { status: 'completed', labelZh: '已完成', labelEn: 'Completed', count: 12 },
+  { status: 'receivable', labelZh: '可簽收', labelEn: 'Receivable', count: 11 },
+  { status: 'treating', labelZh: '治療中', labelEn: 'Treating', count: 15 },
 ];
 
 export const mockRegimens: Regimen[] = [
@@ -42,7 +40,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '林俊賢 醫師',
     reviewingDoctor: '張明輝 醫師',
     reviewingPharmacist: '-',
-    status: 'unexamined',
+    status: 'receivable',
     drugs: [
       {
         id: 'U001', drugCode: 'CAR300', drugName: 'Carboplatin', drugNameZh: '卡鉑注射劑',
@@ -73,7 +71,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '陳建志 醫師',
     reviewingDoctor: '王雅文 醫師',
     reviewingPharmacist: '-',
-    status: 'unexamined',
+    status: 'receivable',
     drugs: [
       {
         id: 'U003', drugCode: 'EPI100', drugName: 'Epirubicin', drugNameZh: '表柔比星注射劑',
@@ -110,7 +108,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '張明輝 醫師',
     reviewingDoctor: '林俊賢 醫師',
     reviewingPharmacist: '-',
-    status: 'unexamined',
+    status: 'receivable',
     drugs: [
       {
         id: 'U006', drugCode: 'RIT375', drugName: 'Rituximab', drugNameZh: '利妥昔單抗注射劑',
@@ -159,7 +157,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '劉玉芳 醫師',
     reviewingDoctor: '陳建志 醫師',
     reviewingPharmacist: '-',
-    status: 'unexamined',
+    status: 'receivable',
     drugs: [
       {
         id: 'U011', drugCode: 'PAC175', drugName: 'Paclitaxel', drugNameZh: '紫杉醇注射劑',
@@ -190,7 +188,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '黃偉明 醫師',
     reviewingDoctor: '吳建華 醫師',
     reviewingPharmacist: '-',
-    status: 'unexamined',
+    status: 'receivable',
     drugs: [
       {
         id: 'U013', drugCode: 'DOC075', drugName: 'Docetaxel', drugNameZh: '多西他賽注射劑',
@@ -221,7 +219,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '王雅文 醫師',
     reviewingDoctor: '張明輝 醫師',
     reviewingPharmacist: '-',
-    status: 'unexamined',
+    status: 'receivable',
     drugs: [
       {
         id: 'U015', drugCode: 'CYC300', drugName: 'Cyclophosphamide', drugNameZh: '環磷醯胺注射劑',
@@ -258,7 +256,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '吳建華 醫師',
     reviewingDoctor: '劉玉芳 醫師',
     reviewingPharmacist: '-',
-    status: 'unexamined',
+    status: 'receivable',
     drugs: [
       {
         id: 'U018', drugCode: 'OXA130', drugName: 'Oxaliplatin', drugNameZh: '奧沙利鉑注射劑',
@@ -289,7 +287,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '林俊賢 醫師',
     reviewingDoctor: '張明輝 醫師',
     reviewingPharmacist: '陳藥師',
-    status: 'preparing',
+    status: 'treating',
     drugs: [
       {
         id: 'D001', drugCode: 'DOX050', drugName: 'Doxorubicin', drugNameZh: '多柔比星注射劑',
@@ -326,7 +324,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '陳建志 醫師',
     reviewingDoctor: '王雅文 醫師',
     reviewingPharmacist: '林藥師',
-    status: 'preparing',
+    status: 'treating',
     drugs: [
       {
         id: 'D004', drugCode: 'BOR001', drugName: 'Bortezomib', drugNameZh: '硼替佐米注射劑',
@@ -363,7 +361,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '劉玉芳 醫師',
     reviewingDoctor: '黃偉明 醫師',
     reviewingPharmacist: '陳藥師',
-    status: 'preparing',
+    status: 'treating',
     drugs: [
       {
         id: 'D007', drugCode: 'PAC175', drugName: 'Paclitaxel', drugNameZh: '紫杉醇注射劑',
@@ -394,7 +392,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '吳建華 醫師',
     reviewingDoctor: '張淑玲 醫師',
     reviewingPharmacist: '林藥師',
-    status: 'preparing',
+    status: 'treating',
     drugs: [
       {
         id: 'D009', drugCode: 'OXA085', drugName: 'Oxaliplatin', drugNameZh: '奧沙利鉑注射劑',
@@ -437,7 +435,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '林俊賢 醫師',
     reviewingDoctor: '陳建志 醫師',
     reviewingPharmacist: '陳藥師',
-    status: 'dispense',
+    status: 'treating',
     drugs: [
       {
         id: 'E001', drugCode: 'GEM1000', drugName: 'Gemcitabine', drugNameZh: '吉西他濱注射劑',
@@ -468,7 +466,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '王雅文 醫師',
     reviewingDoctor: '張明輝 醫師',
     reviewingPharmacist: '林藥師',
-    status: 'dispense',
+    status: 'treating',
     drugs: [
       {
         id: 'E003', drugCode: 'IDA012', drugName: 'Idarubicin', drugNameZh: '伊達比星注射劑',
@@ -499,7 +497,7 @@ export const mockRegimens: Regimen[] = [
     prescribingDoctor: '劉玉芳 醫師',
     reviewingDoctor: '吳建華 醫師',
     reviewingPharmacist: '陳藥師',
-    status: 'completed',
+    status: 'treating',
     drugs: [
       {
         id: 'F001', drugCode: 'CAR300', drugName: 'Carboplatin', drugNameZh: '卡鉑注射劑',

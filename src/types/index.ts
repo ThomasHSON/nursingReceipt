@@ -1,6 +1,6 @@
-export type TabKey = 'dispense' | 'information' | 'inventory' | 'setting';
+export type TabKey = 'dispense' | 'information';
 
-export type DispenseStatus = 'unexamined' | 'preparing' | 'dispense' | 'completed';
+export type DispenseStatus = 'receivable' | 'treating';
 
 export type PatientType = 'outpatient' | 'inpatient';
 

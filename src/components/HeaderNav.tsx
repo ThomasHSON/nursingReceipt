@@ -9,10 +9,8 @@ interface Tab {
 }
 
 const TABS: Tab[] = [
-  { key: 'dispense', labelZh: '調劑排程', labelEn: 'DISPENSE' },
+  { key: 'dispense', labelZh: '臨床作業', labelEn: 'CLINICAL' },
   { key: 'information', labelZh: '審核資訊', labelEn: 'INFORMATION' },
-  { key: 'inventory', labelZh: '庫存管理', labelEn: 'INVENTORY' },
-  { key: 'setting', labelZh: '系統設定', labelEn: 'SETTING' },
 ];
 
 interface HeaderNavProps {

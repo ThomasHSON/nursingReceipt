@@ -10,15 +10,7 @@ const STATUS_CONFIG: Record<
   DispenseStatus,
   { bg: string; numColor: string; labelColor: string; subColor: string; ringColor: string; accentBar: string }
 > = {
-  unexamined: {
-    bg: 'bg-slate-100/70 hover:bg-slate-50/90',
-    numColor: 'text-slate-700',
-    labelColor: 'text-slate-800',
-    subColor: 'text-slate-400',
-    ringColor: 'ring-slate-400/40',
-    accentBar: 'bg-slate-400',
-  },
-  preparing: {
+  receivable: {
     bg: 'bg-amber-50/70 hover:bg-amber-50/90',
     numColor: 'text-amber-600',
     labelColor: 'text-amber-800',
@@ -26,7 +18,7 @@ const STATUS_CONFIG: Record<
     ringColor: 'ring-amber-400/40',
     accentBar: 'bg-amber-400',
   },
-  dispense: {
+  treating: {
     bg: 'bg-blue-50/70 hover:bg-blue-50/90',
     numColor: 'text-blue-600',
     labelColor: 'text-blue-800',
@@ -34,19 +26,11 @@ const STATUS_CONFIG: Record<
     ringColor: 'ring-blue-400/40',
     accentBar: 'bg-blue-400',
   },
-  completed: {
-    bg: 'bg-emerald-50/70 hover:bg-emerald-50/90',
-    numColor: 'text-emerald-600',
-    labelColor: 'text-emerald-800',
-    subColor: 'text-emerald-400',
-    ringColor: 'ring-emerald-400/40',
-    accentBar: 'bg-emerald-400',
-  },
 };
 
 export default function StatusOverviewCards({ stats, activeStatus, onSelect }: StatusOverviewCardsProps) {
   return (
-    <div className="grid grid-cols-4 gap-5 p-3">
+    <div className="grid grid-cols-2 gap-5 p-3">
       {stats.map((stat) => {
         const cfg = STATUS_CONFIG[stat.status];
         const isActive = activeStatus === stat.status;
