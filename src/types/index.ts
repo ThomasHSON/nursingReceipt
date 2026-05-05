@@ -36,6 +36,25 @@ export interface DrugItem {
   checked: boolean;
 }
 
+export interface LabItem {
+  /** 檢驗項目代碼/名稱，e.g. "BUN" */
+  name: string;
+  /** 數值，字串形式保留原始精度 */
+  value: string;
+  /** 單位 */
+  unit: string;
+  /** 參考範圍下限 */
+  refLow?: number;
+  /** 參考範圍上限 */
+  refHigh?: number;
+  /** 標記：H=偏高, L=偏低, C=危急值 */
+  flag?: 'H' | 'L' | 'C';
+  /** 報告單號 */
+  reportId?: string;
+  /** 採檢日期 YYYY-MM-DD */
+  collectedDate?: string;
+}
+
 export interface Regimen {
   id: string;
   /** 病歷號 */
@@ -68,4 +87,18 @@ export interface Regimen {
   drugs: DrugItem[];
   /** 狀態 */
   status: DispenseStatus;
+  /** 檢驗數值清單 */
+  labData: LabItem[];
+  /** Port-A / PICC 狀態 */
+  portStatus?: string;
+  /** Nadir WBC */
+  nadirWBC?: string;
+  /** 體表面積 BSA */
+  bsa?: number;
+  /** ECOG 體能狀態 */
+  ecog?: string;
+  /** 細胞型態 */
+  cellType?: string;
+  /** 化療週期 */
+  cycle?: number;
 }

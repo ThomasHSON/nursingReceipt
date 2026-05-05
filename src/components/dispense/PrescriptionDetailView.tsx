@@ -4,6 +4,7 @@ import { Regimen, DrugItem } from '../../types';
 import DrugTable from './DrugTable';
 import NursingRecordModal from '../information/NursingRecordModal';
 import ChemoAssistantModal from './ChemoAssistantModal';
+import LabValuePanel from './LabValuePanel';
 
 type CardKey = 'receivable' | 'treating';
 type QueryTab = 'main' | 'regimen' | 'treatment' | 'project' | 'variation' | 'labvalue' | 'alert';
@@ -104,7 +105,13 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
         <ChemoAssistantModal regimen={regimen} onClose={() => setAssistantOpen(false)} />
       )}
 
-      {activeTab !== 'main' && (
+      {activeTab === 'labvalue' && (
+        <div className="flex-1 glass-card-solid overflow-hidden flex flex-col min-h-0">
+          <LabValuePanel regimen={regimen} />
+        </div>
+      )}
+
+      {activeTab !== 'main' && activeTab !== 'labvalue' && (
         <div className="flex-1 flex items-center justify-center">
           <div className="glass-card px-10 py-8 text-center">
             <p className="text-slate-600 text-base font-medium">{QUERY_TABS.find(t => t.key === activeTab)?.label} 功能建置中</p>
