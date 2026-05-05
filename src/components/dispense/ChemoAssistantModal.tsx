@@ -1,7 +1,8 @@
+import { useEffect, useRef, useState } from 'react';
 import { X, Bot, Sparkles, ChevronRight } from 'lucide-react';
 import { Regimen } from '../../types';
 
-// ── Per-regimen AI summaries (single paragraph) ───────────────────────────────
+// ── Per-regimen AI summaries ───────────────────────────────────────────────────
 
 const AI_SUMMARIES: Record<string, string> = {
   R001: '於2026年3月10日接受 Carboplatin（AUC 5）合併 Pemetrexed（500 mg/m²）化療，給藥前已確認葉酸及維生素B12補充狀況符合規定。治療過程中生命徵象穩定，體溫維持於36.1至36.5℃，脈搏68至80次/分，呼吸16至18次/分，血壓112至128/68至80 mmHg。化療期間無注射部位紅腫、疼痛或外滲現象，病人無明顯不適主訴。副作用評估：感覺神經症狀G0，疲倦G1，食慾尚可。化療結束後以含Heparin之生理食鹽水沖洗留置針，提供返家衛教，提醒病人注意發燒（≥38℃）、嚴重喘促及骨髓抑制相關症狀，建議下次治療前追蹤腎功能以評估 Carboplatin 劑量調整必要性。',
@@ -19,6 +20,66 @@ const AI_SUMMARIES: Record<string, string> = {
   R013: '於2026年3月10日接受 IA 誘導化療（Idarubicin 12 mg/m² D1-3、Cytarabine 200 mg/m² CI D1-7），本次為住院治療。Cytarabine 以持續輸注泵24小時給予，每日重新配製並確認無配伍禁忌；Idarubicin 靜脈緩慢推注5-10分鐘，避光保存，確認管路通暢後給藥。治療過程中生命徵象穩定，體溫36.0至36.4℃，脈搏74至88次/分，呼吸18次/分，血壓108至122/64至76 mmHg。住院密切觀察中，每日監測血球計數，已備 G-CSF 支持治療。副作用評估：黏膜炎G2，疲倦G3，噁心G2，骨髓抑制預期達最低點。由林藥師確認審核，出院後衛教：發燒門檻降至37.5℃立即返院，嚴格口腔護理，避免生食，定期回院追蹤骨髓恢復情形。',
   R014: '於2026年3月10日接受 TC 方案（Carboplatin AUC 5、Paclitaxel 175 mg/m²）化療，給藥前已完成地塞米松、苯海拉明前處置，Carboplatin 先行給藥後依序給予 Paclitaxel，全程無過敏反應。治療過程中生命徵象穩定，體溫36.1至36.5℃，脈搏68至82次/分，呼吸17至18次/分，血壓108至122/64至78 mmHg。化療期間注射部位通暢（均已確認），病人耐受良好，無主訴不適。副作用評估：噁心G0，感覺神經症狀G1（手腳輕微麻木），疲倦G1，脫髮G2。由陳藥師確認審核，化療結束後以含Heparin之生理食鹽水沖洗管路，返家衛教提醒：嚴重神經症狀、骨盆腔異常出血或發燒（≥38℃）立即返院，按時回診接受後續影像追蹤。',
 };
+
+// ── Typing bubble ─────────────────────────────────────────────────────────────
+
+const CHAR_SPEED = 18; // ms per character
+
+function TypingBubble({ text }: { text: string }) {
+  const [displayed, setDisplayed] = useState('');
+  const [done, setDone] = useState(false);
+  const indexRef = useRef(0);
+  const rafRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    indexRef.current = 0;
+    setDisplayed('');
+    setDone(false);
+
+    function tick() {
+      indexRef.current += 1;
+      setDisplayed(text.slice(0, indexRef.current));
+      if (indexRef.current < text.length) {
+        rafRef.current = setTimeout(tick, CHAR_SPEED);
+      } else {
+        setDone(true);
+      }
+    }
+
+    rafRef.current = setTimeout(tick, 300);
+    return () => {
+      if (rafRef.current) clearTimeout(rafRef.current);
+    };
+  }, [text]);
+
+  return (
+    <div className="flex items-start gap-3">
+      {/* avatar */}
+      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-teal-500 flex items-center justify-center shadow-[0_2px_10px_rgba(14,165,233,0.25)] flex-shrink-0 mt-0.5">
+        <Bot className="w-4 h-4 text-white" />
+      </div>
+
+      {/* bubble */}
+      <div className="relative max-w-[calc(100%-3.5rem)] bg-slate-50 border border-slate-200 rounded-2xl rounded-tl-sm px-5 py-4 shadow-sm">
+        {/* tail */}
+        <div className="absolute -left-[7px] top-3 w-3 h-3 overflow-hidden">
+          <div className="w-3 h-3 bg-slate-50 border-l border-t border-slate-200 rotate-[-45deg] translate-x-[3px] translate-y-[3px]" />
+        </div>
+
+        <p className="text-slate-700 text-base leading-[1.85] whitespace-pre-wrap break-words">
+          {displayed}
+          {!done && (
+            <span className="inline-flex items-end gap-0.5 ml-0.5 translate-y-[1px]">
+              <span className="w-1 h-1 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-1 h-1 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-1 h-1 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+            </span>
+          )}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 // ── Main modal ────────────────────────────────────────────────────────────────
 
@@ -78,9 +139,9 @@ export default function ChemoAssistantModal({ regimen, onClose }: ChemoAssistant
           </div>
         </div>
 
-        {/* body */}
-        <div className="flex-1 overflow-y-auto px-6 py-6 min-h-0">
-          <p className="text-slate-700 text-base leading-[1.85]">{summary}</p>
+        {/* chat body */}
+        <div className="flex-1 overflow-y-auto px-6 py-6 min-h-0 bg-white">
+          <TypingBubble text={summary} />
         </div>
 
         {/* footer */}
