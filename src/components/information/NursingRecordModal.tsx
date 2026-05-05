@@ -267,7 +267,7 @@ export default function NursingRecordModal({ regimen, onClose }: NursingRecordMo
       />
 
       {/* panel */}
-      <div className="relative z-10 w-full max-w-3xl bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/60 flex flex-col max-h-[90vh]">
+      <div className="relative z-10 w-full max-w-3xl bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/60 flex flex-col h-[90vh]">
         {/* header */}
         <div className="flex items-center gap-4 px-6 py-4 border-b border-slate-100 flex-shrink-0">
           <div className="flex-1 min-w-0">
