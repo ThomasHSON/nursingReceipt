@@ -48,7 +48,7 @@ function TypingText({ text }: { text: string }) {
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, [text]);
   return (
-    <p className="bg-slate-50 rounded-2xl p-5 text-slate-700 text-base leading-relaxed whitespace-pre-wrap">
+    <p className="bg-slate-50 rounded-2xl p-5 whitespace-pre-wrap text-base text-slate-700 leading-relaxed">
       {displayed}
       {!done && (
         <span className="inline-block w-0.5 h-4 bg-sky-400 ml-0.5 align-middle animate-pulse" />
