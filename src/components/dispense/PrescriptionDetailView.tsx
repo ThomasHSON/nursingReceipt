@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, BookOpen, FileText, AlertTriangle, BarChart2, FlaskConical, Building2, ClipboardList } from 'lucide-react';
+import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, BookOpen, FileText, AlertTriangle, BarChart2, FlaskConical, Building2, ClipboardList, Bot } from 'lucide-react';
 import { Regimen, DrugItem } from '../../types';
 import DrugTable from './DrugTable';
 import NursingRecordModal from '../information/NursingRecordModal';
+import ChemoAssistantModal from './ChemoAssistantModal';
 
 type CardKey = 'receivable' | 'treating';
 type QueryTab = 'main' | 'regimen' | 'treatment' | 'project' | 'variation' | 'labvalue' | 'alert';
@@ -35,6 +36,7 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
   const [activeTab, setActiveTab] = useState<QueryTab>('main');
   const [drugs] = useState<DrugItem[]>(regimen.drugs);
   const [nursingOpen, setNursingOpen] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false);
 
   const patientType = regimen.admissionNumber ? 'inpatient' : 'outpatient';
   const mainLabel = cardKey === 'receivable' ? '簽收' : '查看';
@@ -68,6 +70,14 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
         </div>
 
         <button
+          onClick={() => setAssistantOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-base font-semibold bg-gradient-to-r from-sky-500 to-teal-500 text-white shadow-[0_2px_12px_rgba(14,165,233,0.35)] hover:shadow-[0_4px_18px_rgba(14,165,233,0.45)] hover:brightness-105 active:scale-[0.97] transition-all duration-200 flex-shrink-0"
+        >
+          <Bot className="w-4 h-4" />
+          化療助手
+        </button>
+
+        <button
           onClick={() => setNursingOpen(true)}
           className="flex items-center gap-2 px-4 py-2 rounded-xl text-base font-semibold bg-teal-500 text-white shadow-[0_2px_12px_rgba(20,184,166,0.35)] hover:bg-teal-600 hover:shadow-[0_4px_18px_rgba(20,184,166,0.45)] active:scale-[0.97] transition-all duration-200 flex-shrink-0"
         >
@@ -89,6 +99,9 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
 
       {nursingOpen && (
         <NursingRecordModal regimen={regimen} onClose={() => setNursingOpen(false)} />
+      )}
+      {assistantOpen && (
+        <ChemoAssistantModal regimen={regimen} onClose={() => setAssistantOpen(false)} />
       )}
 
       {activeTab !== 'main' && (
