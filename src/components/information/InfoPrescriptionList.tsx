@@ -26,8 +26,7 @@ export default function InfoPrescriptionList({ regimens, onSelect }: InfoPrescri
     filter === 'all' ? true : rx.status === filter
   );
 
-  const outpatient = filtered.filter(rx => !rx.admissionNumber);
-  const inpatient  = filtered.filter(rx => !!rx.admissionNumber);
+  const inpatient = filtered.filter(rx => !!rx.admissionNumber);
 
   return (
     <div className="flex flex-col flex-1 gap-4 min-h-0">
@@ -71,14 +70,6 @@ export default function InfoPrescriptionList({ regimens, onSelect }: InfoPrescri
       </div>
 
       <div className="flex gap-4 flex-1 min-h-0">
-        <PrescriptionSection
-          title="門診"
-          dotColor="bg-sky-400"
-          countColor="text-sky-600"
-          emptyText="目前無符合條件的門診處方"
-          regimens={outpatient}
-          onSelect={onSelect}
-        />
         <PrescriptionSection
           title="住院"
           dotColor="bg-amber-400"
