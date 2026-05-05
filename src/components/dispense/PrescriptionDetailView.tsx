@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, BookOpen, FileText, AlertTriangle, BarChart2, FlaskConical, Building2 } from 'lucide-react';
+import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, BookOpen, FileText, AlertTriangle, BarChart2, FlaskConical, Building2, ClipboardList } from 'lucide-react';
 import { Regimen, DrugItem } from '../../types';
 import DrugTable from './DrugTable';
+import NursingRecordModal from '../information/NursingRecordModal';
 
 type CardKey = 'receivable' | 'treating';
 type QueryTab = 'main' | 'regimen' | 'treatment' | 'project' | 'variation' | 'labvalue' | 'alert';
@@ -33,6 +34,7 @@ interface PrescriptionDetailViewProps {
 export default function PrescriptionDetailView({ regimen, cardKey, onBack }: PrescriptionDetailViewProps) {
   const [activeTab, setActiveTab] = useState<QueryTab>('main');
   const [drugs] = useState<DrugItem[]>(regimen.drugs);
+  const [nursingOpen, setNursingOpen] = useState(false);
 
   const patientType = regimen.admissionNumber ? 'inpatient' : 'outpatient';
   const mainLabel = cardKey === 'receivable' ? '簽收' : '查看';
@@ -65,6 +67,14 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
           )}
         </div>
 
+        <button
+          onClick={() => setNursingOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-base font-semibold bg-teal-500 text-white shadow-[0_2px_12px_rgba(20,184,166,0.35)] hover:bg-teal-600 hover:shadow-[0_4px_18px_rgba(20,184,166,0.45)] active:scale-[0.97] transition-all duration-200 flex-shrink-0"
+        >
+          <ClipboardList className="w-4 h-4" />
+          護理紀錄
+        </button>
+
         <select
           value={activeTab}
           onChange={e => setActiveTab(e.target.value as QueryTab)}
@@ -76,6 +86,10 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
           ))}
         </select>
       </div>
+
+      {nursingOpen && (
+        <NursingRecordModal regimen={regimen} onClose={() => setNursingOpen(false)} />
+      )}
 
       {activeTab !== 'main' && (
         <div className="flex-1 flex items-center justify-center">
