@@ -48,9 +48,10 @@ export default function HeaderNav({ activeTab, onTabChange, currentUser, onLogou
           <div className="flex items-center gap-2.5 bg-white/60 border border-slate-200/70 rounded-xl px-3 py-2 shadow-sm">
             <CircleUser className="w-6 h-6 text-blue-400 flex-shrink-0" />
             <div className="w-px h-5 bg-slate-200 flex-shrink-0" />
-            <span className="text-slate-800 text-sm font-semibold">陳筱芳</span>
-            <span className="text-slate-300 text-sm">|</span>
-            <span className="text-slate-500 text-sm">護理科</span>
+            <div className="flex flex-col leading-tight">
+              <span className="text-slate-800 text-sm font-semibold">陳筱芳</span>
+              <span className="text-slate-400 text-xs">護理科</span>
+            </div>
           </div>
           <button
             onClick={onLogout}
