@@ -20,10 +20,6 @@ export default function DrugTable({ drugs, checkable = false, onToggle }: DrugTa
     <div className="flex-1 overflow-y-auto scrollbar-thin">
       {drugs.map((drug) => {
         const hasWeight = drug.weightBefore !== undefined && drug.weightAfter !== undefined;
-        const weightDiff = hasWeight
-          ? (drug.weightAfter! - drug.weightBefore!).toFixed(2)
-          : null;
-        const diffNum = hasWeight ? drug.weightAfter! - drug.weightBefore! : 0;
 
         return (
           <div
@@ -92,29 +88,16 @@ export default function DrugTable({ drugs, checkable = false, onToggle }: DrugTa
               </div>
 
               {hasWeight && (
-                <div className="mt-2 flex items-center gap-2 flex-wrap">
-                  <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5">
-                    <Scale className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                    <span className="text-xs text-slate-400">秤重前</span>
-                    <span className="text-sm font-semibold text-slate-700 font-mono">{drug.weightBefore!.toFixed(2)}</span>
-                    <span className="text-xs text-slate-400">g</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5">
-                    <Scale className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                    <span className="text-xs text-slate-400">秤重後</span>
-                    <span className="text-sm font-semibold text-slate-700 font-mono">{drug.weightAfter!.toFixed(2)}</span>
-                    <span className="text-xs text-slate-400">g</span>
-                  </div>
-                  <div className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 border text-xs font-semibold font-mono ${
-                    diffNum < 0
-                      ? 'bg-sky-50 border-sky-200 text-sky-700'
-                      : diffNum > 0
-                      ? 'bg-rose-50 border-rose-200 text-rose-700'
-                      : 'bg-slate-50 border-slate-200 text-slate-500'
-                  }`}>
-                    <span className="font-normal mr-0.5">差值</span>
-                    {diffNum > 0 ? '+' : ''}{weightDiff} g
-                  </div>
+                <div className="mt-2 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
+                  <Scale className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  <span className="text-xs text-slate-400">秤重</span>
+                  <span className="text-xs text-slate-500">前</span>
+                  <span className="text-sm font-bold text-slate-700 font-mono">{drug.weightBefore!.toFixed(2)}</span>
+                  <span className="text-xs text-slate-500">g</span>
+                  <span className="text-slate-300 mx-0.5">→</span>
+                  <span className="text-xs text-slate-500">後</span>
+                  <span className="text-sm font-bold text-slate-700 font-mono">{drug.weightAfter!.toFixed(2)}</span>
+                  <span className="text-xs text-slate-500">g</span>
                 </div>
               )}
             </div>
