@@ -90,14 +90,14 @@ export default function DrugTable({ drugs, checkable = false, onToggle }: DrugTa
               {hasWeight && (
                 <div className="mt-2 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
                   <Scale className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-                  <span className="text-xs text-slate-400">秤重</span>
-                  <span className="text-xs text-slate-500">前</span>
-                  <span className="text-sm font-bold text-slate-700 font-mono">{drug.weightBefore!.toFixed(2)}</span>
-                  <span className="text-xs text-slate-500">g</span>
+                  <span className="text-slate-400">秤重</span>
+                  <span className="text-slate-500">前</span>
+                  <span className="font-bold text-slate-700 font-mono">{drug.weightBefore!.toFixed(2)}</span>
+                  <span className="text-slate-500">g</span>
                   <span className="text-slate-300 mx-0.5">→</span>
-                  <span className="text-xs text-slate-500">後</span>
-                  <span className="text-sm font-bold text-slate-700 font-mono">{drug.weightAfter!.toFixed(2)}</span>
-                  <span className="text-xs text-slate-500">g</span>
+                  <span className="text-slate-500">後</span>
+                  <span className="font-bold text-slate-700 font-mono">{drug.weightAfter!.toFixed(2)}</span>
+                  <span className="text-slate-500">g</span>
                 </div>
               )}
             </div>
