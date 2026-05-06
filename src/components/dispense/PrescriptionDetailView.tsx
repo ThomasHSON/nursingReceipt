@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, BookOpen, FileText, AlertTriangle, BarChart2, FlaskConical, Building2, ClipboardList, Bot, CheckCircle2, User } from 'lucide-react';
+import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, BookOpen, FileText, AlertTriangle, BarChart2, FlaskConical, Building2, ClipboardList, Bot, CheckCircle2, User, MessageSquare } from 'lucide-react';
 import { Regimen, DrugItem } from '../../types';
 import DrugTable from './DrugTable';
 import NursingRecordModal from '../information/NursingRecordModal';
 import ChemoAssistantModal from './ChemoAssistantModal';
 import LabValuePanel from './LabValuePanel';
+import RemarkModal from './RemarkModal';
 
 type CardKey = 'receivable' | 'treating';
 type QueryTab = 'main' | 'treatment' | 'variation' | 'labvalue';
@@ -37,6 +38,7 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [endConfirming, setEndConfirming] = useState(false);
   const [endConfirmed, setEndConfirmed] = useState(false);
+  const [remarkOpen, setRemarkOpen] = useState(false);
 
   function handleEndTreatment() {
     setEndConfirmed(true);
@@ -108,6 +110,9 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
       {assistantOpen && (
         <ChemoAssistantModal regimen={regimen} onClose={() => setAssistantOpen(false)} />
       )}
+      {remarkOpen && (
+        <RemarkModal regimen={regimen} onClose={() => setRemarkOpen(false)} />
+      )}
 
       {activeTab === 'labvalue' && (
         <div className="flex-1 glass-card-solid overflow-hidden flex flex-col min-h-0">
@@ -178,6 +183,14 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
                   <span className="text-slate-400 text-base">審核藥師</span>
                   <span className="text-slate-700 text-base font-semibold">{regimen.reviewingPharmacist || '-'}</span>
                 </div>
+                <div className="flex-1" />
+                <button
+                  onClick={() => setRemarkOpen(true)}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:text-sky-600 hover:border-sky-300 hover:bg-sky-50 shadow-sm transition-all duration-150 active:scale-[0.97]"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  備註
+                </button>
               </div>
             </div>
           </div>
