@@ -9,8 +9,9 @@ const FILTER_OPTIONS: { value: FilterOption; label: string }[] = [
   { value: 'all',       label: '全部' },
   { value: 'completed', label: '已完成' },
   { value: 'delivering',label: '運送中' },
-  { value: 'received',  label: '已簽收' },
-  { value: 'finished',  label: '療程結束' },
+  { value: 'received',    label: '已簽收' },
+  { value: 'finished',    label: '療程結束' },
+  { value: 'discharging', label: '待離院' },
 ];
 
 interface InfoPrescriptionListProps {

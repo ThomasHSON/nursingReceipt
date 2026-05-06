@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Calendar, Ruler, Weight, User, Stethoscope, Building2, CheckCircle2, ClipboardList, ChevronRight, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Ruler, Weight, Clock, Building2, User, Stethoscope, CheckCircle2 } from 'lucide-react';
 import { Regimen } from '../../types';
 import DrugTable from './DrugTable';
 
@@ -12,15 +12,6 @@ function calcAge(birthDate: string): number {
   return age;
 }
 
-const DISCHARGE_CHECKLIST = [
-  { id: 'c1', label: '療程藥品全數確認交回或銷毀' },
-  { id: 'c2', label: 'Port-A / PICC 管路已妥善封管' },
-  { id: 'c3', label: '返家衛教說明已完成並簽署' },
-  { id: 'c4', label: '離院用藥（口服藥）已備妥並說明' },
-  { id: 'c5', label: '後續回診日期已告知病人' },
-  { id: 'c6', label: '緊急聯絡資訊已提供' },
-];
-
 interface DischargeDetailViewProps {
   regimen: Regimen;
   onBack: () => void;
@@ -28,28 +19,12 @@ interface DischargeDetailViewProps {
 }
 
 export default function DischargeDetailView({ regimen, onBack, onConfirm }: DischargeDetailViewProps) {
-  const [checked, setChecked] = useState<Set<string>>(new Set());
   const [confirming, setConfirming] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
 
-  const allChecked = checked.size === DISCHARGE_CHECKLIST.length;
-
-  function toggleCheck(id: string) {
-    setChecked(prev => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  }
-
-  function handleConfirm() {
-    if (!allChecked) return;
-    setConfirming(true);
-  }
-
   function handleFinalConfirm() {
     setConfirmed(true);
-    setTimeout(() => onConfirm(regimen), 1200);
+    setTimeout(() => onConfirm(regimen), 1000);
   }
 
   return (
@@ -74,134 +49,78 @@ export default function DischargeDetailView({ regimen, onBack, onConfirm }: Disc
             </div>
           )}
         </div>
-        <span className="px-3 py-1 rounded-full text-sm font-semibold bg-teal-50 text-teal-700 border border-teal-200/60">
+        <span className="px-3 py-1 rounded-full text-sm font-semibold bg-teal-50 text-teal-700 border border-teal-200/60 flex-shrink-0">
           待離院確認
         </span>
       </div>
 
-      <div className="flex gap-4 flex-1 min-h-0">
-        {/* left: patient info + drugs */}
-        <div className="flex flex-col gap-3 flex-1 min-h-0 min-w-0">
-          {/* patient info */}
-          <div className="glass-card-solid px-5 py-4 flex-shrink-0">
-            <div className="space-y-2.5">
-              <div className="flex items-center gap-5">
-                <div className="flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4 text-slate-400" />
-                  <span className="text-slate-700 text-base font-semibold">{calcAge(regimen.birthDate)}歲</span>
-                  <span className="text-slate-400 text-sm font-mono">({regimen.birthDate})</span>
-                </div>
-                <div className="w-px h-4 bg-slate-200" />
-                <div className="flex items-center gap-1.5">
-                  <Ruler className="w-4 h-4 text-slate-400" />
-                  <span className="text-slate-700 text-base font-semibold">{regimen.height} cm</span>
-                </div>
-                <div className="w-px h-4 bg-slate-200" />
-                <div className="flex items-center gap-1.5">
-                  <Weight className="w-4 h-4 text-slate-400" />
-                  <span className="text-slate-700 text-base font-semibold">{regimen.weight} kg</span>
-                </div>
-                <div className="flex-1" />
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-slate-400" />
-                  <span className="text-slate-700 text-base font-semibold font-mono">{regimen.effectiveDateTime}</span>
-                </div>
-              </div>
-              <div className="flex items-baseline gap-3">
-                <span className="text-slate-400 text-base w-16 flex-shrink-0">診斷</span>
-                <span className="text-slate-800 text-base font-semibold">{regimen.diagnosis}</span>
-              </div>
-              <div className="flex items-baseline gap-3">
-                <span className="text-slate-400 text-base w-16 flex-shrink-0">科別</span>
-                <span className="text-slate-800 text-base font-semibold">{regimen.department}</span>
-              </div>
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400 text-base">開立醫師</span>
-                  <span className="text-slate-700 text-base font-semibold">{regimen.prescribingDoctor}</span>
-                </div>
-                <div className="w-px h-4 bg-slate-200" />
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400 text-base">審核藥師</span>
-                  <span className="text-slate-700 text-base font-semibold">{regimen.reviewingPharmacist || '-'}</span>
-                </div>
-              </div>
+      {/* patient info */}
+      <div className="glass-card-solid px-5 py-4 flex-shrink-0">
+        <div className="space-y-2.5">
+          <div className="flex items-center gap-5">
+            <div className="flex items-center gap-1.5">
+              <Calendar className="w-4 h-4 text-slate-400" />
+              <span className="text-slate-700 text-base font-semibold">{calcAge(regimen.birthDate)}歲</span>
+              <span className="text-slate-400 text-sm font-mono">({regimen.birthDate})</span>
+            </div>
+            <div className="w-px h-4 bg-slate-200" />
+            <div className="flex items-center gap-1.5">
+              <Ruler className="w-4 h-4 text-slate-400" />
+              <span className="text-slate-700 text-base font-semibold">{regimen.height} cm</span>
+            </div>
+            <div className="w-px h-4 bg-slate-200" />
+            <div className="flex items-center gap-1.5">
+              <Weight className="w-4 h-4 text-slate-400" />
+              <span className="text-slate-700 text-base font-semibold">{regimen.weight} kg</span>
+            </div>
+            <div className="flex-1" />
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-slate-400" />
+              <span className="text-slate-700 text-base font-semibold font-mono">{regimen.effectiveDateTime}</span>
             </div>
           </div>
-
-          {/* drug table */}
-          <div className="glass-card-solid flex-1 flex flex-col min-h-0 overflow-hidden">
-            <DrugTable drugs={regimen.drugs} checkable={false} />
+          <div className="flex items-baseline gap-3">
+            <span className="text-slate-400 text-base w-16 flex-shrink-0">診斷</span>
+            <span className="text-slate-800 text-base font-semibold">{regimen.diagnosis}</span>
           </div>
-        </div>
-
-        {/* right: checklist + confirm */}
-        <div className="w-80 flex-shrink-0 flex flex-col gap-3">
-          <div className="glass-card-solid flex flex-col flex-1 min-h-0">
-            <div className="flex items-center gap-2 px-5 py-3.5 border-b border-slate-200/60 flex-shrink-0">
-              <ClipboardList className="w-4 h-4 text-teal-600" />
-              <h3 className="text-slate-800 font-bold text-base">離院確認清單</h3>
+          <div className="flex items-baseline gap-3">
+            <span className="text-slate-400 text-base w-16 flex-shrink-0">科別</span>
+            <span className="text-slate-800 text-base font-semibold">{regimen.department}</span>
+          </div>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400 text-base">開立醫師</span>
+              <span className="text-slate-700 text-base font-semibold">{regimen.prescribingDoctor}</span>
             </div>
-            <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-2">
-              {DISCHARGE_CHECKLIST.map((item) => {
-                const isChecked = checked.has(item.id);
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => toggleCheck(item.id)}
-                    className={`flex items-start gap-3 w-full text-left px-3 py-2.5 rounded-xl border transition-all duration-200 ${
-                      isChecked
-                        ? 'bg-teal-50 border-teal-200/70 text-teal-800'
-                        : 'bg-white/60 border-slate-200/50 text-slate-700 hover:bg-slate-50/80 hover:border-slate-300/60'
-                    }`}
-                  >
-                    <div className={`mt-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${
-                      isChecked ? 'border-teal-500 bg-teal-500' : 'border-slate-300 bg-white'
-                    }`}>
-                      {isChecked && <CheckCircle2 className="w-3 h-3 text-white" strokeWidth={3} />}
-                    </div>
-                    <span className="text-sm font-medium leading-snug">{item.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="px-4 pb-4 flex-shrink-0">
-              <div className="flex items-center justify-between mb-3 px-1">
-                <span className="text-slate-500 text-sm">完成進度</span>
-                <span className={`text-sm font-bold ${allChecked ? 'text-teal-600' : 'text-slate-500'}`}>
-                  {checked.size} / {DISCHARGE_CHECKLIST.length}
-                </span>
-              </div>
-              <div className="h-1.5 bg-slate-100 rounded-full mb-4 overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-teal-400 to-teal-500 rounded-full transition-all duration-500"
-                  style={{ width: `${(checked.size / DISCHARGE_CHECKLIST.length) * 100}%` }}
-                />
-              </div>
-
-              {confirmed ? (
-                <div className="flex items-center justify-center gap-2 py-3 text-teal-600 font-semibold">
-                  <CheckCircle2 className="w-5 h-5" />
-                  離院確認完成
-                </div>
-              ) : (
-                <button
-                  disabled={!allChecked}
-                  onClick={handleConfirm}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-base font-semibold transition-all duration-200 ${
-                    allChecked
-                      ? 'bg-teal-500 text-white shadow-[0_2px_12px_rgba(20,184,166,0.35)] hover:bg-teal-600 hover:shadow-[0_4px_18px_rgba(20,184,166,0.45)] active:scale-[0.97]'
-                      : 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                  }`}
-                >
-                  確認離院
-                  {allChecked && <ChevronRight className="w-4 h-4" />}
-                </button>
-              )}
+            <div className="w-px h-4 bg-slate-200" />
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400 text-base">審核藥師</span>
+              <span className="text-slate-700 text-base font-semibold">{regimen.reviewingPharmacist || '-'}</span>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* drug table */}
+      <div className="glass-card-solid flex-1 flex flex-col min-h-0 overflow-hidden">
+        <DrugTable drugs={regimen.drugs} checkable={false} />
+      </div>
+
+      {/* confirm bar */}
+      <div className="flex items-center justify-end glass-card px-5 py-3 flex-shrink-0">
+        {confirmed ? (
+          <div className="flex items-center gap-2 text-teal-600 font-semibold text-base">
+            <CheckCircle2 className="w-5 h-5" />
+            離院確認完成
+          </div>
+        ) : (
+          <button
+            onClick={() => setConfirming(true)}
+            className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-base font-semibold bg-teal-500 text-white shadow-[0_2px_16px_rgba(20,184,166,0.35)] hover:bg-teal-600 hover:shadow-[0_4px_22px_rgba(20,184,166,0.45)] active:scale-[0.97] transition-all duration-200"
+          >
+            確認離院
+          </button>
+        )}
       </div>
 
       {/* confirm modal */}
@@ -229,7 +148,7 @@ export default function DischargeDetailView({ regimen, onBack, onConfirm }: Disc
                 <span className="text-slate-600 text-sm">{regimen.diagnosis}</span>
               </div>
             </div>
-            <p className="text-slate-600 text-sm">確認所有離院清單已核對完畢，即將完成本次住院離院作業。</p>
+            <p className="text-slate-600 text-sm">確認完成本次住院離院作業，此處方將從待離院清單中移除。</p>
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirming(false)}
