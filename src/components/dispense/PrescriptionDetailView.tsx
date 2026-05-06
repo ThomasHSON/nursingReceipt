@@ -7,15 +7,12 @@ import ChemoAssistantModal from './ChemoAssistantModal';
 import LabValuePanel from './LabValuePanel';
 
 type CardKey = 'receivable' | 'treating';
-type QueryTab = 'main' | 'regimen' | 'treatment' | 'project' | 'variation' | 'labvalue' | 'alert';
+type QueryTab = 'main' | 'treatment' | 'variation' | 'labvalue';
 
 const QUERY_TABS: { key: QueryTab; label: string }[] = [
-  { key: 'regimen', label: 'Regimen' },
   { key: 'treatment', label: '計劃治療書' },
-  { key: 'project', label: '專案用藥' },
   { key: 'variation', label: '變異紀錄' },
   { key: 'labvalue', label: '檢驗數值' },
-  { key: 'alert', label: '異常提醒' },
 ];
 
 function calcAge(birthDate: string): number {
