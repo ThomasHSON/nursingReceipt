@@ -88,7 +88,7 @@ export default function DrugTable({ drugs, checkable = false, onToggle }: DrugTa
               </div>
 
               {hasWeight && (
-                <div className="mt-2 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
+                <div className="mt-2 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
                   <Scale className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                   <span className="text-slate-400">秤重</span>
                   <span className="text-slate-500">前</span>
