@@ -1,4 +1,4 @@
-type CardKey = 'receivable' | 'treating';
+type CardKey = 'receivable' | 'treating' | 'discharge';
 
 interface CardDef {
   key: CardKey;
@@ -31,11 +31,20 @@ const CARD_CONFIG: Record<CardKey, {
     ringColor: 'ring-blue-400/40',
     accentBar: 'bg-blue-400',
   },
+  discharge: {
+    bg: 'bg-teal-50/70 hover:bg-teal-50/90',
+    numColor: 'text-teal-600',
+    labelColor: 'text-teal-800',
+    subColor: 'text-teal-400',
+    ringColor: 'ring-teal-400/40',
+    accentBar: 'bg-teal-400',
+  },
 };
 
 export default function StatusOverviewCards({ cards, activeCard, onSelect }: StatusOverviewCardsProps) {
+  const cols = cards.length === 3 ? 'grid-cols-3' : 'grid-cols-2';
   return (
-    <div className="grid grid-cols-2 gap-5 p-3">
+    <div className={`grid ${cols} gap-5 p-3`}>
       {cards.map((card) => {
         const cfg = CARD_CONFIG[card.key];
         const isActive = activeCard === card.key;

@@ -1,7 +1,7 @@
 export type TabKey = 'dispense' | 'information';
 
-export type DispenseStatus = 'completed' | 'delivering' | 'received' | 'finished';
-// completed=已完成, delivering=運送中, received=已簽收, finished=療程結束
+export type DispenseStatus = 'completed' | 'delivering' | 'received' | 'finished' | 'discharging';
+// completed=已完成, delivering=運送中, received=已簽收, finished=療程結束, discharging=待離院確認
 
 export type PatientType = 'outpatient' | 'inpatient';
 

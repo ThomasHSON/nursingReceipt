@@ -4,12 +4,19 @@ import { DispenseStatus } from '../../types';
 import { mockStatusStats, mockRegimens } from '../../data/mockData';
 import StatusOverviewCards from './StatusOverviewCards';
 import PrescriptionListDetail from './PrescriptionListDetail';
+import DischargePage from './DischargePage';
 
-type CardKey = 'receivable' | 'treating';
+type CardKey = 'receivable' | 'treating' | 'discharge';
 
-const CARD_FILTER: Record<CardKey, DispenseStatus[]> = {
+const CARD_FILTER: Record<Exclude<CardKey, 'discharge'>, DispenseStatus[]> = {
   receivable: ['completed', 'delivering'],
   treating: ['received'],
+};
+
+const TAB_ACTIVE_COLOR: Record<CardKey, string> = {
+  receivable: 'bg-amber-500/10 text-amber-700 border border-amber-300/50 shadow-sm',
+  treating:   'bg-blue-500/10 text-blue-700 border border-blue-300/50 shadow-sm',
+  discharge:  'bg-teal-500/10 text-teal-700 border border-teal-300/50 shadow-sm',
 };
 
 export default function DispensePage() {
@@ -21,22 +28,23 @@ export default function DispensePage() {
 
   const handleBack = () => setActiveCard(null);
 
-  const filteredRegimens = activeCard
-    ? mockRegimens.filter((rx) => CARD_FILTER[activeCard].includes(rx.status))
-    : [];
-
-  const activeStat = activeCard
-    ? mockStatusStats.find((s) =>
-        activeCard === 'receivable'
-          ? s.status === 'delivering'
-          : s.status === 'received'
-      )
-    : undefined;
-
   const CARDS = [
     { key: 'receivable' as CardKey, labelZh: '可簽收', labelEn: 'Receivable' },
-    { key: 'treating' as CardKey, labelZh: '治療中', labelEn: 'Treating' },
+    { key: 'treating'  as CardKey, labelZh: '治療中', labelEn: 'Treating' },
+    { key: 'discharge' as CardKey, labelZh: '離院流程', labelEn: 'Discharge' },
   ];
+
+  const filteredRegimens =
+    activeCard && activeCard !== 'discharge'
+      ? mockRegimens.filter((rx) => CARD_FILTER[activeCard].includes(rx.status))
+      : [];
+
+  const showPrescriptionList = activeCard === 'receivable' || activeCard === 'treating';
+  const activeStat = showPrescriptionList
+    ? mockStatusStats.find((s) =>
+        activeCard === 'receivable' ? s.status === 'delivering' : s.status === 'received'
+      )
+    : true;
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
@@ -60,22 +68,26 @@ export default function DispensePage() {
             <div className="px-6 pt-3 mb-3 flex-shrink-0">
               <div className="flex items-center justify-between">
                 <div className="flex gap-2">
-                  {CARDS.map((card) => (
-                    <button
-                      key={card.key}
-                      onClick={() => setActiveCard(card.key)}
-                      className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                        activeCard === card.key
-                          ? 'bg-blue-500/12 text-blue-700 border border-blue-300/50 shadow-sm'
-                          : 'text-slate-500 hover:text-slate-700 hover:bg-white/60 border border-transparent'
-                      }`}
-                    >
-                      {card.labelZh}
-                      <span className="ml-2 text-xs opacity-60">
-                        ({mockRegimens.filter(rx => CARD_FILTER[card.key].includes(rx.status)).length})
-                      </span>
-                    </button>
-                  ))}
+                  {CARDS.map((card) => {
+                    const count =
+                      card.key === 'discharge'
+                        ? mockRegimens.filter(rx => rx.status === 'discharging').length
+                        : mockRegimens.filter(rx => CARD_FILTER[card.key as Exclude<CardKey, 'discharge'>].includes(rx.status)).length;
+                    return (
+                      <button
+                        key={card.key}
+                        onClick={() => setActiveCard(card.key)}
+                        className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                          activeCard === card.key
+                            ? TAB_ACTIVE_COLOR[card.key]
+                            : 'text-slate-500 hover:text-slate-700 hover:bg-white/60 border border-transparent'
+                        }`}
+                      >
+                        {card.labelZh}
+                        <span className="ml-2 text-xs opacity-60">({count})</span>
+                      </button>
+                    );
+                  })}
                 </div>
                 <div className="flex items-center gap-3">
                   <button
@@ -92,11 +104,15 @@ export default function DispensePage() {
               </div>
             </div>
 
-            <PrescriptionListDetail
-              key={activeCard}
-              cardKey={activeCard}
-              regimens={filteredRegimens}
-            />
+            {activeCard === 'discharge' ? (
+              <DischargePage />
+            ) : (
+              <PrescriptionListDetail
+                key={activeCard}
+                cardKey={activeCard}
+                regimens={filteredRegimens}
+              />
+            )}
           </>
         )
       )}

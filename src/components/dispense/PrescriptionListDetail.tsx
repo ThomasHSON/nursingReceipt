@@ -12,10 +12,11 @@ interface PrescriptionListDetailProps {
 }
 
 const STATUS_LABEL: Record<DispenseStatus, { label: string; className: string }> = {
-  completed: { label: '已完成', className: 'bg-slate-100 text-slate-500 border-slate-200' },
-  delivering: { label: '運送中', className: 'bg-amber-100 text-amber-700 border-amber-200' },
-  received: { label: '已簽收', className: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
-  finished: { label: '療程結束', className: 'bg-blue-100 text-blue-700 border-blue-200' },
+  completed:   { label: '已完成',   className: 'bg-slate-100 text-slate-500 border-slate-200' },
+  delivering:  { label: '運送中',   className: 'bg-amber-100 text-amber-700 border-amber-200' },
+  received:    { label: '已簽收',   className: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
+  finished:    { label: '療程結束', className: 'bg-blue-100 text-blue-700 border-blue-200' },
+  discharging: { label: '待離院',   className: 'bg-teal-100 text-teal-700 border-teal-200' },
 };
 
 const PATIENT_TYPE_STYLE: Record<'outpatient' | 'inpatient', { card: string; badge: string; dot: string }> = {
