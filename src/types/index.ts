@@ -101,8 +101,4 @@ export interface Regimen {
   cellType?: string;
   /** 化療週期 */
   cycle?: number;
-  /** 秤重前體重 kg */
-  weightBefore?: number;
-  /** 秤重後體重 kg */
-  weightAfter?: number;
 }

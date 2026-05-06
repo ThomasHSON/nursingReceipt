@@ -48,7 +48,6 @@ export const mockRegimens: Regimen[] = [
     status: 'completed',
     bsa: 1.85, cycle: 3, ecog: 'ECOG 1', cellType: '肺腺癌（腺泡型）',
     portStatus: 'good', nadirWBC: '2.84',
-    weightBefore: 71.2, weightAfter: 70.3,
     labData: [
       lab('WBC',      '4.80', 'K/uL',   4.0, 10.0,  undefined, 'L2310001', '2026-05-06'),
       lab('ANC',      '2.52', 'K/uL',   1.8, 7.5,   undefined, 'L2310001', '2026-05-06'),
@@ -94,7 +93,6 @@ export const mockRegimens: Regimen[] = [
     status: 'completed',
     bsa: 1.57, cycle: 4, ecog: 'ECOG 0', cellType: '浸潤性乳管癌（IDC）',
     portStatus: 'good', nadirWBC: '2.10',
-    weightBefore: 55.8, weightAfter: 55.2,
     labData: [
       lab('WBC',      '5.20', 'K/uL',   4.0, 10.0,  undefined, 'L2310010', '2026-05-06'),
       lab('ANC',      '2.90', 'K/uL',   1.8, 7.5,   undefined, 'L2310010', '2026-05-06'),
@@ -148,7 +146,6 @@ export const mockRegimens: Regimen[] = [
     status: 'delivering',
     bsa: 1.73, cycle: 2, ecog: 'ECOG 2', cellType: '瀰漫性大B細胞淋巴瘤（GCB型）',
     portStatus: 'good', nadirWBC: '1.85',
-    weightBefore: 66.0, weightAfter: 65.4,
     labData: [
       lab('WBC',      '3.40', 'K/uL',   4.0, 10.0,  'L',       'L2310020', '2026-05-06'),
       lab('ANC',      '1.62', 'K/uL',   1.8, 7.5,   'L',       'L2310020', '2026-05-06'),
@@ -214,7 +211,6 @@ export const mockRegimens: Regimen[] = [
     status: 'delivering',
     bsa: 1.52, cycle: 5, ecog: 'ECOG 1', cellType: '漿液性卵巢癌（高惡性度）',
     portStatus: 'good', nadirWBC: '2.72',
-    weightBefore: 52.5, weightAfter: 52.1,
     labData: [
       lab('WBC',      '5.60', 'K/uL',   4.0, 10.0,  undefined, 'L2310030', '2026-05-06'),
       lab('ANC',      '2.97', 'K/uL',   1.8, 7.5,   undefined, 'L2310030', '2026-05-06'),
@@ -263,7 +259,6 @@ export const mockRegimens: Regimen[] = [
     status: 'delivering',
     bsa: 1.90, cycle: 3, ecog: 'ECOG 1', cellType: '前列腺腺癌（Gleason 8）',
     portStatus: 'poor', nadirWBC: '2.20',
-    weightBefore: 72.8, weightAfter: 72.3,
     labData: [
       lab('WBC',      '4.10', 'K/uL',   4.0, 10.0,  undefined, 'L2310040', '2026-05-07'),
       lab('ANC',      '2.05', 'K/uL',   1.8, 7.5,   undefined, 'L2310040', '2026-05-07'),
@@ -311,7 +306,6 @@ export const mockRegimens: Regimen[] = [
     status: 'received',
     bsa: 1.64, cycle: 1, ecog: 'ECOG 1', cellType: '急性淋巴性白血病（B-ALL, Ph+）',
     portStatus: 'good', nadirWBC: '0.42',
-    weightBefore: 58.4, weightAfter: 57.9,
     labData: [
       lab('WBC',      '1.80', 'K/uL',   4.0, 10.0,  'L',       'L2310050', '2026-05-07'),
       lab('ANC',      '0.68', 'K/uL',   1.8, 7.5,   'L',       'L2310050', '2026-05-07'),
@@ -365,7 +359,6 @@ export const mockRegimens: Regimen[] = [
     status: 'received',
     bsa: 1.78, cycle: 2, ecog: 'ECOG 2', cellType: '胃腺癌（低分化型）',
     portStatus: 'good', nadirWBC: '2.60',
-    weightBefore: 68.6, weightAfter: 68.0,
     labData: [
       lab('WBC',      '4.50', 'K/uL',   4.0, 10.0,  undefined, 'L2310060', '2026-05-06'),
       lab('ANC',      '2.38', 'K/uL',   1.8, 7.5,   undefined, 'L2310060', '2026-05-06'),
@@ -413,7 +406,6 @@ export const mockRegimens: Regimen[] = [
     status: 'received',
     bsa: 1.46, cycle: 2, ecog: 'ECOG 0', cellType: '浸潤性乳管癌（HER2+/ER-/PR-）',
     portStatus: 'good', nadirWBC: '2.35',
-    weightBefore: 48.3, weightAfter: 47.8,
     labData: [
       lab('WBC',      '5.80', 'K/uL',   4.0, 10.0,  undefined, 'L2310070', '2026-05-07'),
       lab('ANC',      '3.24', 'K/uL',   1.8, 7.5,   undefined, 'L2310070', '2026-05-07'),
@@ -466,7 +458,6 @@ export const mockRegimens: Regimen[] = [
     status: 'received',
     bsa: 1.72, cycle: 3, ecog: 'ECOG 1', cellType: '多發性骨髓瘤（IgG kappa型）',
     portStatus: 'good', nadirWBC: '2.88',
-    weightBefore: 63.5, weightAfter: 63.1,
     labData: [
       lab('WBC',      '4.20', 'K/uL',   4.0, 10.0,  undefined, 'L2310080', '2026-05-06'),
       lab('ANC',      '2.14', 'K/uL',   1.8, 7.5,   undefined, 'L2310080', '2026-05-06'),
@@ -521,7 +512,6 @@ export const mockRegimens: Regimen[] = [
     status: 'finished',
     bsa: 1.55, cycle: 6, ecog: 'ECOG 1', cellType: '子宮頸鱗狀細胞癌',
     portStatus: 'good', nadirWBC: '2.95',
-    weightBefore: 54.2, weightAfter: 53.8,
     labData: [
       lab('WBC',      '5.10', 'K/uL',   4.0, 10.0,  undefined, 'L2310090', '2026-05-06'),
       lab('ANC',      '2.80', 'K/uL',   1.8, 7.5,   undefined, 'L2310090', '2026-05-06'),
@@ -568,7 +558,6 @@ export const mockRegimens: Regimen[] = [
     status: 'finished',
     bsa: 1.84, cycle: 8, ecog: 'ECOG 1', cellType: '大腸直腸腺癌（MSS型）',
     portStatus: 'good', nadirWBC: '2.44',
-    weightBefore: 71.5, weightAfter: 71.0,
     labData: [
       lab('WBC',      '4.90', 'K/uL',   4.0, 10.0,  undefined, 'L2310100', '2026-05-06'),
       lab('ANC',      '2.68', 'K/uL',   1.8, 7.5,   undefined, 'L2310100', '2026-05-06'),
@@ -628,7 +617,6 @@ export const mockRegimens: Regimen[] = [
     status: 'finished',
     bsa: 1.55, cycle: 3, ecog: 'ECOG 1', cellType: '三陰性乳癌（TNBC，基底細胞型）',
     portStatus: 'good', nadirWBC: '2.05',
-    weightBefore: 57.3, weightAfter: 56.9,
     labData: [
       lab('WBC',      '3.90', 'K/uL',   4.0, 10.0,  'L',       'L2310110', '2026-05-06'),
       lab('ANC',      '1.95', 'K/uL',   1.8, 7.5,   undefined, 'L2310110', '2026-05-06'),
@@ -674,7 +662,6 @@ export const mockRegimens: Regimen[] = [
     status: 'finished',
     bsa: 1.80, cycle: 4, ecog: 'ECOG 2', cellType: '急性骨髓性白血病（AML-M2，NPM1突變）',
     portStatus: 'good', nadirWBC: '0.18',
-    weightBefore: 69.8, weightAfter: 69.2,
     labData: [
       lab('WBC',      '0.60', 'K/uL',   4.0, 10.0,  'L',       'L2310120', '2026-05-06'),
       lab('ANC',      '0.12', 'K/uL',   1.8, 7.5,   'L',       'L2310120', '2026-05-06'),
@@ -721,7 +708,6 @@ export const mockRegimens: Regimen[] = [
     status: 'finished',
     bsa: 1.54, cycle: 3, ecog: 'ECOG 0', cellType: '子宮內膜樣腺癌（Grade 2）',
     portStatus: 'good', nadirWBC: '2.62',
-    weightBefore: 53.6, weightAfter: 53.2,
     labData: [
       lab('WBC',      '5.40', 'K/uL',   4.0, 10.0,  undefined, 'L2310130', '2026-05-06'),
       lab('ANC',      '3.02', 'K/uL',   1.8, 7.5,   undefined, 'L2310130', '2026-05-06'),
@@ -769,7 +755,6 @@ export const mockRegimens: Regimen[] = [
     status: 'discharging',
     bsa: 1.57, cycle: 4, ecog: 'ECOG 0', cellType: '浸潤性乳管癌（IDC）',
     portStatus: 'good', nadirWBC: '2.10',
-    weightBefore: 55.5, weightAfter: 55.0,
     labData: [
       lab('WBC',      '5.20', 'K/uL',   4.0, 10.0,  undefined, 'L2310010', '2026-05-06'),
       lab('ANC',      '2.90', 'K/uL',   1.8, 7.5,   undefined, 'L2310010', '2026-05-06'),
@@ -815,7 +800,6 @@ export const mockRegimens: Regimen[] = [
     status: 'discharging',
     bsa: 1.64, cycle: 1, ecog: 'ECOG 1', cellType: '急性淋巴性白血病（B-ALL, Ph+）',
     portStatus: 'good', nadirWBC: '0.42',
-    weightBefore: 58.9, weightAfter: 58.3,
     labData: [
       lab('WBC',      '1.80', 'K/uL',   4.0, 10.0,  'L',       'L2310050', '2026-05-07'),
       lab('ANC',      '0.68', 'K/uL',   1.8, 7.5,   'L',       'L2310050', '2026-05-07'),
@@ -861,7 +845,6 @@ export const mockRegimens: Regimen[] = [
     status: 'discharging',
     bsa: 1.80, cycle: 4, ecog: 'ECOG 2', cellType: '急性骨髓性白血病（AML-M2，NPM1突變）',
     portStatus: 'good', nadirWBC: '0.18',
-    weightBefore: 69.5, weightAfter: 68.8,
     labData: [
       lab('WBC',      '2.10', 'K/uL',   4.0, 10.0,  'L',       'L2310120', '2026-05-06'),
       lab('ANC',      '0.85', 'K/uL',   1.8, 7.5,   'L',       'L2310120', '2026-05-06'),
@@ -907,7 +890,6 @@ export const mockRegimens: Regimen[] = [
     status: 'discharging',
     bsa: 1.72, cycle: 3, ecog: 'ECOG 1', cellType: '多發性骨髓瘤（IgG kappa型）',
     portStatus: 'good', nadirWBC: '2.88',
-    weightBefore: 63.8, weightAfter: 63.4,
     labData: [
       lab('WBC',      '4.20', 'K/uL',   4.0, 10.0,  undefined, 'L2310080', '2026-05-06'),
       lab('ANC',      '2.14', 'K/uL',   1.8, 7.5,   undefined, 'L2310080', '2026-05-06'),
