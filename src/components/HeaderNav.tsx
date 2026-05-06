@@ -44,13 +44,13 @@ export default function HeaderNav({ activeTab, onTabChange, currentUser, onLogou
           ))}
         </nav>
 
-        <div className="flex items-center gap-3 flex-shrink-0 w-44 justify-end">
+        <div className="flex items-center gap-3 flex-shrink-0 justify-end">
           <div className="flex items-center gap-2.5 bg-white/60 border border-slate-200/70 rounded-xl px-3 py-2 shadow-sm">
-            <CircleUser className="w-7 h-7 text-blue-400 flex-shrink-0" />
-            <div className="text-right">
-              <p className="text-slate-800 text-sm font-semibold leading-tight">{currentUser.name}</p>
-              <p className="text-slate-400 text-[11px] leading-tight">{currentUser.employeeId} &nbsp;·&nbsp; {currentUser.role}</p>
-            </div>
+            <CircleUser className="w-6 h-6 text-blue-400 flex-shrink-0" />
+            <div className="w-px h-5 bg-slate-200 flex-shrink-0" />
+            <span className="text-slate-800 text-sm font-semibold">陳筱芳</span>
+            <span className="text-slate-300 text-sm">|</span>
+            <span className="text-slate-500 text-sm">護理科</span>
           </div>
           <button
             onClick={onLogout}
