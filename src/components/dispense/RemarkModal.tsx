@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, MessageSquare, Send, UserCheck, Stethoscope } from 'lucide-react';
+import { X, MessageSquare, Send, UserCheck, Stethoscope, ChevronDown } from 'lucide-react';
 import { Regimen } from '../../types';
 
 interface Remark {
@@ -60,6 +60,8 @@ export default function RemarkModal({ regimen, onClose }: RemarkModalProps) {
     MOCK_REMARKS[regimen.id] ?? MOCK_REMARKS.default
   );
   const [newNote, setNewNote] = useState('');
+  const [caseOpen, setCaseOpen] = useState(true);
+  const [nurseOpen, setNurseOpen] = useState(true);
 
   function handleSubmit() {
     const trimmed = newNote.trim();
@@ -106,52 +108,64 @@ export default function RemarkModal({ regimen, onClose }: RemarkModalProps) {
 
           {/* case manager section */}
           <section>
-            <div className="flex items-center gap-2 mb-3">
-              <UserCheck className="w-4 h-4 text-amber-500" />
+            <button
+              onClick={() => setCaseOpen(o => !o)}
+              className="flex items-center gap-2 w-full text-left mb-0 group"
+            >
+              <UserCheck className="w-4 h-4 text-amber-500 flex-shrink-0" />
               <span className="text-slate-700 font-semibold text-sm">個管師備註</span>
               <span className="ml-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 text-xs font-semibold border border-amber-100">{caseRemarks.length}</span>
-            </div>
-            {caseRemarks.length === 0 ? (
-              <p className="text-slate-400 text-sm pl-1">尚無個管師備註</p>
-            ) : (
-              <div className="space-y-2.5">
-                {caseRemarks.map(r => (
-                  <div key={r.id} className="bg-amber-50/60 border border-amber-100 rounded-xl px-4 py-3">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-amber-700 text-sm font-semibold">{r.author}</span>
-                      <span className="text-slate-300 text-xs">·</span>
-                      <span className="text-slate-400 text-xs font-mono">{r.datetime}</span>
+              <ChevronDown className={`w-4 h-4 text-slate-400 ml-auto transition-transform duration-200 ${caseOpen ? 'rotate-0' : '-rotate-90'}`} />
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 ${caseOpen ? 'max-h-[600px] opacity-100 mt-3' : 'max-h-0 opacity-0 mt-0'}`}>
+              {caseRemarks.length === 0 ? (
+                <p className="text-slate-400 text-sm pl-1">尚無個管師備註</p>
+              ) : (
+                <div className="space-y-2.5">
+                  {caseRemarks.map(r => (
+                    <div key={r.id} className="bg-amber-50/60 border border-amber-100 rounded-xl px-4 py-3">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-amber-700 text-sm font-semibold">{r.author}</span>
+                        <span className="text-slate-300 text-xs">·</span>
+                        <span className="text-slate-400 text-xs font-mono">{r.datetime}</span>
+                      </div>
+                      <p className="text-slate-700 text-sm leading-relaxed">{r.content}</p>
                     </div>
-                    <p className="text-slate-700 text-sm leading-relaxed">{r.content}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
           </section>
 
           {/* nurse section */}
           <section>
-            <div className="flex items-center gap-2 mb-3">
-              <Stethoscope className="w-4 h-4 text-sky-500" />
+            <button
+              onClick={() => setNurseOpen(o => !o)}
+              className="flex items-center gap-2 w-full text-left group"
+            >
+              <Stethoscope className="w-4 h-4 text-sky-500 flex-shrink-0" />
               <span className="text-slate-700 font-semibold text-sm">護理師備註</span>
               <span className="ml-1 px-2 py-0.5 rounded-full bg-sky-50 text-sky-600 text-xs font-semibold border border-sky-100">{nurseRemarks.length}</span>
-            </div>
-            {nurseRemarks.length === 0 ? (
-              <p className="text-slate-400 text-sm pl-1">尚無護理師備註</p>
-            ) : (
-              <div className="space-y-2.5">
-                {nurseRemarks.map(r => (
-                  <div key={r.id} className="bg-sky-50/60 border border-sky-100 rounded-xl px-4 py-3">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-sky-700 text-sm font-semibold">{r.author}</span>
-                      <span className="text-slate-300 text-xs">·</span>
-                      <span className="text-slate-400 text-xs font-mono">{r.datetime}</span>
+              <ChevronDown className={`w-4 h-4 text-slate-400 ml-auto transition-transform duration-200 ${nurseOpen ? 'rotate-0' : '-rotate-90'}`} />
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 ${nurseOpen ? 'max-h-[600px] opacity-100 mt-3' : 'max-h-0 opacity-0 mt-0'}`}>
+              {nurseRemarks.length === 0 ? (
+                <p className="text-slate-400 text-sm pl-1">尚無護理師備註</p>
+              ) : (
+                <div className="space-y-2.5">
+                  {nurseRemarks.map(r => (
+                    <div key={r.id} className="bg-sky-50/60 border border-sky-100 rounded-xl px-4 py-3">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-sky-700 text-sm font-semibold">{r.author}</span>
+                        <span className="text-slate-300 text-xs">·</span>
+                        <span className="text-slate-400 text-xs font-mono">{r.datetime}</span>
+                      </div>
+                      <p className="text-slate-700 text-sm leading-relaxed">{r.content}</p>
                     </div>
-                    <p className="text-slate-700 text-sm leading-relaxed">{r.content}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
           </section>
         </div>
 
