@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, BookOpen, FileText, AlertTriangle, BarChart2, FlaskConical, Building2, ClipboardList, Bot } from 'lucide-react';
+import { ArrowLeft, Ruler, Weight, Calendar, Stethoscope, BookOpen, FileText, AlertTriangle, BarChart2, FlaskConical, Building2, ClipboardList, Bot, CheckCircle2, User } from 'lucide-react';
 import { Regimen, DrugItem } from '../../types';
 import DrugTable from './DrugTable';
 import NursingRecordModal from '../information/NursingRecordModal';
@@ -35,6 +35,13 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
   const [drugs] = useState<DrugItem[]>(regimen.drugs);
   const [nursingOpen, setNursingOpen] = useState(false);
   const [assistantOpen, setAssistantOpen] = useState(false);
+  const [endConfirming, setEndConfirming] = useState(false);
+  const [endConfirmed, setEndConfirmed] = useState(false);
+
+  function handleEndTreatment() {
+    setEndConfirmed(true);
+    setTimeout(() => onBack(), 1000);
+  }
 
   const patientType = regimen.admissionNumber ? 'inpatient' : 'outpatient';
   const mainLabel = cardKey === 'receivable' ? '簽收' : '查看';
@@ -186,6 +193,68 @@ export default function PrescriptionDetailView({ regimen, cardKey, onBack }: Pre
               </button>
             </div>
           )}
+
+          {cardKey === 'treating' && (
+            <div className="flex items-center justify-end glass-card px-5 py-3 flex-shrink-0">
+              {endConfirmed ? (
+                <div className="flex items-center gap-2 text-green-600 font-semibold text-base">
+                  <CheckCircle2 className="w-5 h-5" />
+                  治療結束已確認
+                </div>
+              ) : (
+                <button
+                  onClick={() => setEndConfirming(true)}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-base font-semibold bg-green-600 text-white shadow-[0_2px_16px_rgba(22,163,74,0.35)] hover:bg-green-700 hover:shadow-[0_4px_22px_rgba(22,163,74,0.45)] active:scale-[0.97] transition-all duration-200 cursor-pointer"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  治療結束
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {endConfirming && !endConfirmed && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setEndConfirming(false)} />
+          <div className="relative z-10 bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm p-6 flex flex-col gap-5">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-green-50 border border-green-200/60 flex items-center justify-center flex-shrink-0">
+                <CheckCircle2 className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <p className="text-slate-800 font-bold text-base">確認治療結束</p>
+                <p className="text-slate-500 text-sm">此操作將完成本次治療</p>
+              </div>
+            </div>
+            <div className="bg-slate-50 rounded-xl px-4 py-3 flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <User className="w-4 h-4 text-slate-400" />
+                <span className="text-slate-800 font-semibold">{regimen.patientName}</span>
+                <span className="text-slate-400 font-mono text-sm">{regimen.chartNumber}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Stethoscope className="w-4 h-4 text-slate-400" />
+                <span className="text-slate-600 text-sm">{regimen.diagnosis}</span>
+              </div>
+            </div>
+            <p className="text-slate-600 text-sm">確認完成本次治療作業，此處方將從治療中清單移除。</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setEndConfirming(false)}
+                className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-colors"
+              >
+                取消
+              </button>
+              <button
+                onClick={handleEndTreatment}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-green-600 text-white font-semibold text-sm hover:bg-green-700 shadow-[0_2px_12px_rgba(22,163,74,0.35)] transition-all active:scale-[0.97]"
+              >
+                確認結束
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
