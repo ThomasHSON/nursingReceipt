@@ -34,6 +34,10 @@ export interface DrugItem {
   dispenseQty: string;
   storageLocation: string;
   checked: boolean;
+  /** 秤重前重量 (g) */
+  weightBefore?: number;
+  /** 秤重後重量 (g) */
+  weightAfter?: number;
 }
 
 export interface LabItem {
