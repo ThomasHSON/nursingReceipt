@@ -1,6 +1,5 @@
 import { CircleUser, LogOut } from 'lucide-react';
 import { TabKey, User } from '../types';
-import logoImage from '../assets/chemo-logo.png';
 
 interface Tab {
   key: TabKey;
@@ -24,10 +23,6 @@ export default function HeaderNav({ activeTab, onTabChange, currentUser, onLogou
   return (
     <header className="w-full bg-white/65 backdrop-blur-xl py-2 border-b border-white/80 shadow-sm shadow-blue-100/40">
       <div className="flex items-center h-16 px-6 gap-4">
-        <div className="flex items-center flex-shrink-0">
-          <img src={logoImage} alt="Chemo Pharmacy Logo" className="h-12 w-auto object-contain" />
-        </div>
-        
 
         <nav className="flex-1 flex items-center justify-center gap-2">
           {TABS.map((tab) => (
