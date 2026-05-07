@@ -129,13 +129,20 @@ export default function PrescriptionListDetail({ cardKey, regimens }: Prescripti
   const [scanValue, setScanValue] = useState('');
   const [selectedRx, setSelectedRx] = useState<Regimen | null>(null);
   const [filter, setFilter] = useState<FilterType>('all');
+  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
 
+  const activeRegimens = regimens.filter(rx => !dismissed.has(rx.id));
   const filtered = filter === 'all'
-    ? regimens
-    : regimens.filter((rx) => regimenPatientType(rx) === filter);
+    ? activeRegimens
+    : activeRegimens.filter((rx) => regimenPatientType(rx) === filter);
 
-  const outpatientCount = regimens.filter((rx) => !rx.admissionNumber).length;
-  const inpatientCount = regimens.filter((rx) => !!rx.admissionNumber).length;
+  const outpatientCount = activeRegimens.filter((rx) => !rx.admissionNumber).length;
+  const inpatientCount = activeRegimens.filter((rx) => !!rx.admissionNumber).length;
+
+  function handleComplete(rx: Regimen) {
+    setDismissed(prev => new Set([...prev, rx.id]));
+    setSelectedRx(null);
+  }
 
   if (selectedRx) {
     return (
@@ -143,6 +150,7 @@ export default function PrescriptionListDetail({ cardKey, regimens }: Prescripti
         regimen={selectedRx}
         cardKey={cardKey}
         onBack={() => setSelectedRx(null)}
+        onComplete={handleComplete}
       />
     );
   }
@@ -182,14 +190,14 @@ export default function PrescriptionListDetail({ cardKey, regimens }: Prescripti
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200/60 flex-shrink-0">
           <div className="flex items-center gap-3">
             <h3 className="text-slate-800 font-bold text-base">處方清單</h3>
-            <span className="text-slate-400 text-sm font-mono">{filtered.length} / {regimens.length} 筆</span>
+            <span className="text-slate-400 text-sm font-mono">{filtered.length} / {activeRegimens.length} 筆</span>
           </div>
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value as FilterType)}
             className="bg-white/80 border border-slate-200/70 rounded-xl px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-300/50 focus:border-sky-300 transition-all cursor-pointer"
           >
-            <option value="all">全部（{regimens.length}）</option>
+            <option value="all">全部（{activeRegimens.length}）</option>
             <option value="outpatient">門診（{outpatientCount}）</option>
             <option value="inpatient">住院（{inpatientCount}）</option>
           </select>
