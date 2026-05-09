@@ -87,11 +87,11 @@ export default function DrugTable({ drugs, checkable = false, onToggle }: DrugTa
                 </div>
               </div>
 
-              {hasWeight && (() => {
-                const diff = drug.weightAfter! - drug.weightBefore!;
-                const pct = (diff / drug.weightBefore!) * 100;
-                const absPct = Math.abs(pct);
-                const isOk = absPct <= 3;
+                      {hasWeight && (() => {
+                const hasTw = drug.theoreticalWeight !== undefined;
+                const base = hasTw ? drug.theoreticalWeight! : drug.weightBefore!;
+                const pct = ((drug.weightAfter! - base) / base) * 100;
+                const isOk = Math.abs(pct) <= 3;
                 return (
                   <div className="mt-2 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
                     <Scale className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />

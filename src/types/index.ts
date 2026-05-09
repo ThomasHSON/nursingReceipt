@@ -34,10 +34,12 @@ export interface DrugItem {
   dispenseQty: string;
   storageLocation: string;
   checked: boolean;
-  /** 秤重前重量 (g) */
+  /** 秤重前重量 (g)：點滴衛材空重 */
   weightBefore?: number;
-  /** 秤重後重量 (g) */
+  /** 秤重後重量 (g)：加藥後總重 */
   weightAfter?: number;
+  /** 理論重量 (g)：秤重前 + 藥品理論重量 */
+  theoreticalWeight?: number;
 }
 
 export interface LabItem {
